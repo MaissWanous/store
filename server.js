@@ -18,7 +18,7 @@ app.use("/", userRout);
 
 // Establish database connection (assuming `db` object is configured correctly in models/index.js)
 db.sequelize.sync().then(() => {
-    app.listen(3000, () => {
+    app.listen(2000, () => {
         console.log("Server is running on port 3000");
     });
 })
