@@ -1,21 +1,27 @@
-// Import required libraries
 const express = require('express');
+const Sequelize = require('sequelize');
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const mysql = require('mysql2');
-//const dotenv = require('dotenv');
-const app = express();
+const db = require("./models");
+const app = express()
 // Set up middleware
 app.use(cors());
 app.use(fileUpload());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(express.json())
-const userRout = require("./routes/user")
-app.use("/",userRout)
+app.use(express.json());
 
-app.listen(3000, () => {
+// API routes
+const userRout = require("./routes/user");
+app.use("/", userRout);
 
-    console.log("server is running")
+// Establish database connection (assuming `db` object is configured correctly in models/index.js)
+db.sequelize.sync().then(() => {
+    app.listen(3000, () => {
+        console.log("Server is running on port 3000");
+    });
 })
+    .catch((error) => {
+        console.error("Error connecting to database:", error);
+    });
