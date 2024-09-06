@@ -1,5 +1,5 @@
 :root {
-    --main-color: #df1faa;
+    --main-color: #944574;
 }
 
 .container {
@@ -9,6 +9,7 @@
 
 * {
     box-sizing: border-box;
+    direction: rtl;
 }
 
 body {
@@ -25,7 +26,6 @@ body {
 
 /* Register */
 .parent {
-    height: 80vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -46,6 +46,7 @@ input {
     box-shadow: 0px 0px 1px 1px rgb(0, 0, 0, 0.1);
     transition: 0.3s;
     margin-bottom: 8px;
+    direction: rtl;
 }
 
 input:focus {
@@ -91,7 +92,7 @@ input::placeholder {
     display: block;
     padding: 6px 2px;
     font-size: 19px;
-    font-weight: bold;
+    font-weight: 600px;
 }
 
 .error {

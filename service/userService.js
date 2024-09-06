@@ -10,13 +10,6 @@ const userService = {
         if (!emailRegex.test(email.toLowerCase())) {
             throw new Error('Invalid email format. Please enter a valid email address.');
         }
-
-        if (!Email.includes("@gmail.com")) {
-            throw new Error("Please check the email address entered and try again. it must be as follows: *******@gmail.com ",
-            );
-
-        }
-
         // Check for existing user with the same email 
         const existingUser = await user.findOne({ where: { email } });
         if (existingUser) {
