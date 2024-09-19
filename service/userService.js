@@ -1,19 +1,36 @@
-const User = require('../models/user');
+const { user } = require('../models');
 const bcrypt = require('bcryptjs');
 
 const userService = {
+
+    async checkEmail(email) {
+        // Validate email format using a regular expression
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        let Email = email.toLowerCase();
+        if (!emailRegex.test(email.toLowerCase())) {
+            throw new Error('Invalid email format. Please enter a valid email address.');
+        }
+        // Check for existing user with the same email 
+        const existingUser = await user.findOne({ where: { email } });
+        if (existingUser) {
+            throw new Error('Email address already in use. Please try a different email.');
+        }
+
+        return true;
+    },
+
     async createUser(userData) {
-        // التحقق من صحة البيانات (يمكن إضافة المزيد من التحقيقات)
-        if (!userData.username || !userData.email || !userData.password) {
+        if (!userData.username || !userData.phone || !userData.email || !userData.password) {
             throw new Error('Missing required fields');
         }
 
-        // تشفير كلمة المرور
+        // password encryption
         const hashedPassword = await bcrypt.hash(userData.password, 10);
         userData.password = hashedPassword;
-
+        userData.phone = parseInt(userData.phone)
         try {
-            const newUser = await User.create(userData);
+            await this.checkEmail(userData.email); // Validate email and throw error if invalid
+            const newUser = await user.create(userData);
             return newUser;
         } catch (error) {
             throw error;

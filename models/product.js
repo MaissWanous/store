@@ -1,5 +1,4 @@
 module.exports = (sequelize, DataTypes) => {
-    const Reservation =require("./reservation")
     const Product = sequelize.define('product', {
         ID: {
             type: DataTypes.INTEGER,
