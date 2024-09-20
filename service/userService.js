@@ -56,7 +56,7 @@ const userService = {
     userData.phone = parseInt(userData.phone)
 
     try {
-     // await this.checkEmail(userData.email); // Validate email and throw error if invalid
+      await this.checkEmail(userData.email); // Validate email and throw error if invalid
       const checkCode = await this.sendCode(userData.email);
       return { checkCode, userData };
     } catch (error) {
