@@ -1,9 +1,13 @@
 :root {
     --main-color: #944574;
+    --main-color-alt:#bd5994;
+    --main-color-light:#bd5994e3;
+    --input-shadow: 0px 0px 1px 1px rgb(0, 0, 0, 0.1);
+    --box--shadow : 0px 2px 15px rgb(0 0 0 / 10%);
 }
 
 .container {
-    padding: 0 90px;
+    padding: 0 50px;
     margin: 0 auto;
 }
 
@@ -17,11 +21,32 @@ body {
     margin: 0;
 }
 
+.logo {
+    width: 70px;
+    height: auto;
+}
+
 /* Header */
 .d-flex {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    direction: ltr;
+}
+
+.register-nav {
+    outline: none;
+    border: none;
+    background-color: var(--main-color);
+    padding: 6px;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    border: 2px solid white;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 12px;
 }
 
 /* Register */
@@ -33,7 +58,7 @@ body {
 
 form {
     width: 100%;
-    box-shadow: 0px 2px 15px rgb(0 0 0 / 10%);
+    box-shadow: var(--box--shadow);
     padding: 20px;
 }
 
@@ -43,7 +68,7 @@ input {
     outline: none;
     border: 2px solid white;
     border-radius: 10px;
-    box-shadow: 0px 0px 1px 1px rgb(0, 0, 0, 0.1);
+    box-shadow: var(--input-shadow);
     transition: 0.3s;
     margin-bottom: 8px;
     direction: rtl;
@@ -61,11 +86,10 @@ input::placeholder {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 40px;
+    margin-top: 5px;
 }
 
-.register button,
-.register-nav {
+.register button {
     outline: none;
     border: none;
     background-color: var(--main-color);
@@ -76,6 +100,7 @@ input::placeholder {
     transition: 0.3s;
     border: 2px solid white;
     font-weight: bold;
+    margin: 5px;
     text-decoration: none;
 }
 
@@ -87,8 +112,7 @@ input::placeholder {
 }
 
 .label {
-    direction: rtl;
-    color: #df1faa;
+    color: var(--main-color-alt);
     display: block;
     padding: 6px 2px;
     font-size: 19px;
@@ -100,7 +124,12 @@ input::placeholder {
     font-size: 14px;
     margin-top: 0;
 }
-
+.link {
+    color: var(--main-color-light);
+    padding: 6px 1px;
+    font-size: 17px;
+    font-weight: 600p
+}
 .h6 {
     font-weight: 700;
     font-size: 16px;

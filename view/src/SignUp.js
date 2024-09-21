@@ -29,7 +29,7 @@ export default function Signup() {
             setEmailError(err.response.status)
         }
     }
-    return (<div>
+    return (<div className="container">
         <div className="parent">
             <div className="register">
                 <form onSubmit={submit} >
