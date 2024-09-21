@@ -27,7 +27,7 @@ export default function Register() {
                         onChange={(e) => setPassword(e.target.value)}
                     ></input>
 
-                    <Link className="link">نسيت كلمة المرور ؟</Link>
+                    <Link to="/email" className="link">نسيت كلمة المرور ؟</Link>
 
                     <div style={{ textAlign: "center" }}>
                         <button type="submit">تسجيل</button>
