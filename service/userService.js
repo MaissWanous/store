@@ -64,7 +64,10 @@ const userService = {
     }
 
   },
- 
+ async addUser(data){
+
+
+ }
 };
 
 module.exports = userService;

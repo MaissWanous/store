@@ -16,11 +16,9 @@ router.post('/signup', async (req, res) => {
         const { username, phone, email, password } = req.body;
         const userData = await userService.checkUser({ username, phone, email, password });
         checkCode = parseInt(userData.checkCode);
-       // req.session.userData = userData;
-       // console.log(res.session.userData)
 
         console.log(checkCode)
-        res.status(201).json({ message: 'The entered data is valid' });
+        res.redirect(`/checkCode?userData=${encodeURIComponent(JSON.stringify(userData))}`);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Invalid data' });
@@ -29,8 +27,10 @@ router.post('/signup', async (req, res) => {
 router.post('/checkCode', async (req, res) => {
     try {
         const userCode = parseInt(req.body.checkCode);
+        const data=req.body;
+        console.log(data+"pppppppppppppppp")
         if (userCode == checkCode) {
-            userService.createUser();
+            userService.createUser(data);
         } else {
             console.log("errr")
         }

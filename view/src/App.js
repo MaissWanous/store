@@ -1,5 +1,9 @@
+
 import { Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
+
+import React from 'react';
+
 import SignUp from "./SignUp";
 import Register from "./Register";
 import Email from "./Email";
