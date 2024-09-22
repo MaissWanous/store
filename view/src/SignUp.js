@@ -25,7 +25,8 @@ export default function Signup() {
                     , password: password
                 })
                 setEmailError("")
-                if(res.status===201)
+                console.log(res.status)
+                if(res.status>=200&&res.status<300)
                     window.location.pathname="/code"
             }
         } catch (err) {

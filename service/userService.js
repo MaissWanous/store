@@ -1,6 +1,7 @@
 const { user } = require('../models');
 const bcrypt = require('bcryptjs');
-const nodemailer = require('nodemailer')
+const nodemailer = require('nodemailer');
+const { use } = require('../routes/user');
 const userService = {
 
   async checkEmail(email) {
@@ -64,10 +65,15 @@ const userService = {
     }
 
   },
- async addUser(data){
-
-
- }
+  async addUser(data) {
+    try {
+      const newUser = user.create(data);
+      return newUser;
+    }
+    catch (err) {
+      throw err
+    }
+  }
 };
 
 module.exports = userService;
