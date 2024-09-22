@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import SignUp from "./SignUp";
 import Register from "./Register";
 import Email from "./Email";
+import Code from "./components/Code";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/register" element={<Register />} />
         <Route path="/email" element={<Email />} />
+        <Route path="/code" element={<Code />} />
       </Routes>
     </div>
   );

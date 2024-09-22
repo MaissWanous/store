@@ -16,8 +16,8 @@ router.post('/signup', async (req, res) => {
         const { username, phone, email, password } = req.body;
         const userData = await userService.checkUser({ username, phone, email, password });
         checkCode = parseInt(userData.checkCode);
-        req.session.userData = userData;
-        console.log(res.session.userData)
+       // req.session.userData = userData;
+       // console.log(res.session.userData)
 
         console.log(checkCode)
         res.status(201).json({ message: 'The entered data is valid' });

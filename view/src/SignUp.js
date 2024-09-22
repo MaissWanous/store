@@ -17,13 +17,15 @@ export default function Signup() {
         else flag = true
         try {
             if (flag) {
-                await axios.post("http://localhost:2000/signup", {
+           let res=   await axios.post("http://localhost:2000/signup", {
                     username: name
                     , phone: phone
                     , email: email
                     , password: password
                 })
                 setEmailError("")
+                if(res.status===201)
+                    window.location.pathname="/code"
             }
         } catch (err) {
             setEmailError(err.response.status)
