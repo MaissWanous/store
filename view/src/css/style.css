@@ -6,10 +6,7 @@
     --box--shadow: 0px 2px 15px rgb(0 0 0 / 10%);
 }
 
-.container {
-    padding: 0 50px;
-    margin: 0 auto;
-}
+
 
 * {
     box-sizing: border-box;
@@ -46,7 +43,7 @@ body {
     border: 2px solid white;
     font-weight: bold;
     text-decoration: none;
-    font-size: 12px;
+    font-size: 16px;
 }
 
 /* Register */
@@ -140,9 +137,7 @@ input::placeholder {
 
 /* Styles for large screens (desktops) */
 @media (min-width: 1024px) {
-    .container {
-        padding: 0 50px;
-    }
+   
 
     .logo {
         width: 100px;
@@ -171,9 +166,6 @@ input::placeholder {
 
 /* Styles for medium screens (tablets) */
 @media (min-width: 768px) and (max-width: 1023px) {
-    .container {
-        padding: 0 30px;
-    }
 
     .logo {
         width: 80px;

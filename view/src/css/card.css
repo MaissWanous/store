@@ -5,11 +5,18 @@
     --input-shadow: 0px 0px 1px 1px rgb(0, 0, 0, 0.1);
     --box--shadow: 0px 2px 15px rgb(0 0 0 / 10%);
 }
-
+* {
+    direction: rtl;
+}
+.card-title {
+    color: var(--main-color-alt);
+    font-weight: 700;
+}
 .card {
     box-shadow: var(--box--shadow);
     transition: 0.3s;
     border: none;
+    border-radius: 5px;
 
     &:hover {
         box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.4);
@@ -26,4 +33,27 @@
     .text-muted i {
         margin: 0 10px;
     }
+}
+@media (max-width: 780px) {
+    .card-columns {
+        display: flex;
+        flex-wrap: wrap; 
+    
+        gap: 5px;
+    }
+    .card {
+        flex: 0 1 46%; 
+        border-radius: 5px;
+        box-sizing: border-box;
+        height: fit-content;
+       }
+    
+    .card-title {
+        font-size: 23px; 
+    }
+
+    .card-text {
+        font-size: 20px; 
+    }
+   
 }
