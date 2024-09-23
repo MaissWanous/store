@@ -1,9 +1,9 @@
 :root {
     --main-color: #944574;
-    --main-color-alt:#b95790;
-    --main-color-light:#bd5994e3;
+    --main-color-alt: #b95790;
+    --main-color-light: #bd5994e3;
     --input-shadow: 0px 0px 1px 1px rgb(0, 0, 0, 0.1);
-    --box--shadow : 0px 2px 15px rgb(0 0 0 / 10%);
+    --box--shadow: 0px 2px 15px rgb(0 0 0 / 10%);
 }
 
 .container {
@@ -124,14 +124,78 @@ input::placeholder {
     font-size: 14px;
     margin-top: 0;
 }
+
 .link {
     color: var(--main-color-light);
     padding: 6px 1px;
     font-size: 17px;
     font-weight: 600p
 }
+
 .h6 {
     font-weight: 700;
     font-size: 16px;
     padding-right: 15px;
+}
+
+/* Styles for large screens (desktops) */
+@media (min-width: 1024px) {
+    .container {
+        padding: 0 50px;
+    }
+
+    .logo {
+        width: 100px;
+    }
+
+    .register-nav,
+    .register button {
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+
+    .label {
+        font-size: 18px;
+    }
+
+    input {
+        padding: 12px 20px;
+        font-size: 16px;
+    }
+
+    .h6 {
+        font-size: 16px;
+        padding-right: 15px;
+    }
+}
+
+/* Styles for medium screens (tablets) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .container {
+        padding: 0 30px;
+    }
+
+    .logo {
+        width: 80px;
+    }
+
+    .register-nav,
+    .register button {
+        font-size: 14px;
+        padding: 8px 15px;
+    }
+
+    .label {
+        font-size: 16px;
+    }
+
+    input {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+
+    .h6 {
+        font-size: 14px;
+        padding-right: 10px;
+    }
 }

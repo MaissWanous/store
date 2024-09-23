@@ -1,13 +1,14 @@
 
 import { Route, Routes } from "react-router-dom";
-import Header from "./components/Header";
 
 import React from 'react';
 
+import Header from "./components/Header";
 import SignUp from "./SignUp";
 import Register from "./Register";
-import Email from "./Email";
+import Email from "./components/Email";
 import Code from "./components/Code";
+import UserHome from "./UserHome";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/email" element={<Email />} />
         <Route path="/code" element={<Code />} />
+        <Route path="/userHome" element={<UserHome/>}/>
       </Routes>
     </div>
   );

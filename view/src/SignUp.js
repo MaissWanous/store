@@ -13,7 +13,7 @@ export default function Signup() {
         let flag = true
         e.preventDefault();
         setAccept(true)
-        if (name == " " || password < 8 || password !== passwordR || phone.length !== 10 || phone[0] !== '0' || phone[1] !== '9')
+        if (name === " " || password < 8 || password !== passwordR || phone.length !== 10 || phone[0] !== '0' || phone[1] !== '9')
             flag = false;
         else flag = true
         try {

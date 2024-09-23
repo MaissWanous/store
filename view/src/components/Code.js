@@ -5,6 +5,9 @@ export default function Code() {
     const [checkCode, setCheckCode] = useState("");
     const [validCode, setValidCode] = useState(false);
 
+    const referrer = document.referrer;
+    const url = new URL(referrer);
+    const path = url.pathname.split('/').pop();
 
     async function submit(e) {
         e.preventDefault();
@@ -13,9 +16,15 @@ export default function Code() {
                 checkCode: checkCode,
             });
 
+
             // Check if the response status indicates an error
             if (res.status >= 200 && res.status < 300) {
                 setValidCode(false); // Reset validCode if the response is successful
+                if (path === "SingUp") {
+                    window.location.pathname = '/userHome'
+                } else {
+                    window.location.pathname = '/resetPass'
+                }
             }
         } catch (err) {
             setValidCode(true)// Set validCode to true if the code is invalid
