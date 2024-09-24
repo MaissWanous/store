@@ -8,7 +8,7 @@ export default function Email() {
     async function submit(e) {
         e.preventDefault();
         try {
-            await axios.post("",
+            await axios.post("http://localhost:2000/forgetPassword",
                 {
                     email: email
                 }

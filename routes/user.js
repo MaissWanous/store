@@ -5,12 +5,10 @@ const userService = require("../service/userService");
 const app = express();
 const router = express.Router();
 
-
 app.use(express.json());
 
-
 // app.use(session({
-//     secret: 'secret', 
+//     secret: 'secret',
 //     cookie: { maxAge: 3000 },
 //     saveUninitialized: true,
 //     resave: false,
@@ -31,7 +29,7 @@ router.post("/signup", async (req, res) => {
     });
     const userData = data.userData; // التأكد من تعريف userData هنا
     console.log(userData);
-    // req.session.userData = userData; 
+    // req.session.userData = userData;
     checkCode = parseInt(data.checkCode);
 
     console.log(checkCode);
@@ -44,7 +42,7 @@ router.post("/signup", async (req, res) => {
 
 router.post("/checkCode", async (req, res) => {
   const userCode = parseInt(req.body.checkCode);
-  //   const userData = req.session.userData; 
+  //   const userData = req.session.userData;
   try {
     if (userCode === checkCode) {
       if (userData) {
@@ -65,19 +63,48 @@ router.post("/logIn", async function (req, res) {
   const { email, password } = req.body;
   try {
     const data = await userService.checkLogIn({
-      email, password
+      email,
+      password,
     });
-    console.log(data.message)
-    res.status(200).json({ message: data.message })
-
+    console.log(data.message);
+    res.status(200).json({ message: data.message });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Invalid data" });
   }
-
-})
+});
+let checkCodeForget = 0;
+let emailForget;
 router.post("/forgetPassword", async function (req, res) {
-  const email = req.body;
-})
+  const email = req.body.email;
+  try {
+    const data = await userService.checkEmailExisting(email);
+    if (data) {
+      checkCodeForget = await userService.sendCode(email);
+      console.log(checkCodeForget);
+    }
+    emailForget = email;
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Invalid data" });
+  }
+});
+router.post("/checkCodeForget", async function (req, res) {
+  const codeForget = parseInt(req.body.checkCode);
+  const { newPassword, confirmPassword } = req.body;
+  try {
+    if (checkCodeForget === codeForget) {
+      if (newPassword === confirmPassword) {
+        const updatePass = await userService.updatePassword(
+          emailForget,
+          newPassword
+        );
+        console.log(updatePass);
+      }
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Invalid data" });
 
+});
 module.exports = router;

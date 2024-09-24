@@ -22,6 +22,24 @@ const userService = {
 
     return true;
   },
+  async checkEmailExisting(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email.toLowerCase())) {
+      throw new Error(
+        "Invalid email format. Please enter a valid email address."
+      );
+    }
+    // Check for existing user with the same email
+    const existingUser = await user.findOne({ where: { email } });
+    if (!existingUser) {
+      throw new Error(
+        "Email address already in use. Please try a different email."
+      );
+    }
+
+    return true;
+  },
 
   async sendCode(email) {
     const confirmCode = Math.floor(1000 + Math.random() * 9000).toString(); // Generate a random 4-digit number
@@ -81,16 +99,16 @@ const userService = {
       const existingUser = await user.findOne({ where: { email } });
 
       if (!existingUser) {
-        return ({ message: -1 });
+        return { message: -1 };
       }
       const isMatch = await bcrypt.compare(
         userData.password,
         existingUser.password
       );
       if (!isMatch) {
-        return ({ message:0});
+        return { message: 0 };
       }
-      return ({ message: 1 });
+      return { message: 1 };
     } catch (error) {
       throw error;
     }
@@ -101,6 +119,18 @@ const userService = {
       return newUser;
     } catch (err) {
       throw err;
+    }
+  },
+  async updatePassword(email, newPassword) {
+    const existingUser = await user.findOne({ where: { email } });
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    console.log(newPassword)
+    try {
+      existingUser.password = hashedPassword;
+      await existingUser.save();
+      return { message: "Password updated successfully." };
+    } catch (error) {
+      throw new Error("Error updating password: " + error.message);
     }
   },
 };
