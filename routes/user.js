@@ -44,7 +44,7 @@ router.post("/signup", async (req, res) => {
 
 router.post("/checkCode", async (req, res) => {
   const userCode = parseInt(req.body.checkCode);
-//   const userData = req.session.userData; 
+  //   const userData = req.session.userData; 
   try {
     if (userCode === checkCode) {
       if (userData) {
@@ -61,23 +61,23 @@ router.post("/checkCode", async (req, res) => {
     res.status(500).json({ error: "An error occurred while adding the user." });
   }
 });
-router.post("/logIn",async function(req,res){
-    const {email,password}=req.body;
-    try {
-        const data = await userService.checkLogIn({
-          email,password
-        });
-        if(data){
-            console.log("SignIn successful")
-        res.status(200).json({ message: "SignIn successful" });}
-      } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Invalid data" });
-      }
+router.post("/logIn", async function (req, res) {
+  const { email, password } = req.body;
+  try {
+    const data = await userService.checkLogIn({
+      email, password
+    });
+    console.log(data.message)
+    res.status(200).json({ message: data.message })
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Invalid data" });
+  }
 
 })
-router.post("/forgetPassword",async function(req,res){
-    const email=req.body;
+router.post("/forgetPassword", async function (req, res) {
+  const email = req.body;
 })
 
 module.exports = router;

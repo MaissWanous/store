@@ -75,29 +75,22 @@ const userService = {
     if (!userData.email || !userData.password) {
       throw new Error("Missing required fields");
     }
-    email=userData.email;
+    email = userData.email;
     try {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-      if (!emailRegex.test(email.toLowerCase())) {
-        throw new Error(
-          "Invalid email format. Please enter a valid email address."
-        );
-      }
       // Check for existing user with the same email
       const existingUser = await user.findOne({ where: { email } });
 
       if (!existingUser) {
-        throw new Error("User not found");
+        return ({ message: -1 });
       }
       const isMatch = await bcrypt.compare(
         userData.password,
         existingUser.password
       );
       if (!isMatch) {
-        throw new Error("Invalid password");
+        return ({ message:0});
       }
-      return(true);
+      return ({ message: 1 });
     } catch (error) {
       throw error;
     }
