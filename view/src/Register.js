@@ -15,7 +15,7 @@ export default function Register() {
             flag = false;
         else flag = true
         if (flag) {
-           await axios.post("http://localhost:2000", {
+           await axios.post("http://localhost:2000/logIn", {
                 email: email
                 , password: password
             })

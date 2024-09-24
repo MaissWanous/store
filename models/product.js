@@ -1,3 +1,4 @@
+
 module.exports = (sequelize, DataTypes) => {
     const Product = sequelize.define('product', {
         ID: {
@@ -7,7 +8,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         Name: {
             type: DataTypes.STRING(200)
-
         },
         price: {
             type: DataTypes.INTEGER
@@ -20,5 +20,10 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
 
+    Product.associate = (models) => {
+        Product.hasMany(models.classification, { foreignKey: 'productID' });
+        Product.hasMany(models.photos, { foreignKey: 'productID' });
+    };
+
     return Product;
-}
+};

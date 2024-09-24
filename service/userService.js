@@ -1,27 +1,29 @@
-const { user } = require('../models');
-const bcrypt = require('bcryptjs');
-const nodemailer = require('nodemailer');
-const { use } = require('../routes/user');
+const { user } = require("../models");
+const bcrypt = require("bcryptjs");
+const nodemailer = require("nodemailer");
+const { use } = require("../routes/user");
 const userService = {
-
   async checkEmail(email) {
     // Validate email format using a regular expression
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(email.toLowerCase())) {
-      throw new Error('Invalid email format. Please enter a valid email address.');
+      throw new Error(
+        "Invalid email format. Please enter a valid email address."
+      );
     }
-    // Check for existing user with the same email 
+    // Check for existing user with the same email
     const existingUser = await user.findOne({ where: { email } });
     if (existingUser) {
-      throw new Error('Email address already in use. Please try a different email.');
+      throw new Error(
+        "Email address already in use. Please try a different email."
+      );
     }
 
     return true;
   },
 
   async sendCode(email) {
-
     const confirmCode = Math.floor(1000 + Math.random() * 9000).toString(); // Generate a random 4-digit number
     try {
       const transporter = nodemailer.createTransport({
@@ -47,14 +49,19 @@ const userService = {
     return confirmCode;
   },
   async checkUser(userData) {
-    if (!userData.username || !userData.phone || !userData.email || !userData.password) {
-      throw new Error('Missing required fields');
+    if (
+      !userData.username ||
+      !userData.phone ||
+      !userData.email ||
+      !userData.password
+    ) {
+      throw new Error("Missing required fields");
     }
 
     // password encryption
     const hashedPassword = await bcrypt.hash(userData.password, 10);
     userData.password = hashedPassword;
-    userData.phone = parseInt(userData.phone)
+    userData.phone = parseInt(userData.phone);
 
     try {
       await this.checkEmail(userData.email); // Validate email and throw error if invalid
@@ -63,17 +70,46 @@ const userService = {
     } catch (error) {
       throw error;
     }
+  },
+  async checkLogIn(userData) {
+    if (!userData.email || !userData.password) {
+      throw new Error("Missing required fields");
+    }
+    email=userData.email;
+    try {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+      if (!emailRegex.test(email.toLowerCase())) {
+        throw new Error(
+          "Invalid email format. Please enter a valid email address."
+        );
+      }
+      // Check for existing user with the same email
+      const existingUser = await user.findOne({ where: { email } });
+
+      if (!existingUser) {
+        throw new Error("User not found");
+      }
+      const isMatch = await bcrypt.compare(
+        userData.password,
+        existingUser.password
+      );
+      if (!isMatch) {
+        throw new Error("Invalid password");
+      }
+      return(true);
+    } catch (error) {
+      throw error;
+    }
   },
   async addUser(data) {
     try {
       const newUser = user.create(data);
       return newUser;
+    } catch (err) {
+      throw err;
     }
-    catch (err) {
-      throw err
-    }
-  }
+  },
 };
 
 module.exports = userService;
