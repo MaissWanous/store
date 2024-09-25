@@ -90,7 +90,7 @@ const userService = {
       if (!isMatch) {
         return { message: 0 };
       }
-      return { message: 1 };
+      return { existingUser, message: 1 };
     } catch (error) {
       throw error;
     }

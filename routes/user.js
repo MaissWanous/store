@@ -1,6 +1,6 @@
 const express = require("express");
-const session = require("express-session");
 const userService = require("../service/userService");
+const authService = require('../services/authService');
 
 const app = express();
 const router = express.Router();
@@ -42,7 +42,8 @@ router.post("/checkCode", async (req, res) => {
     if (userCode == checkCode) {
       if (userData) {
         await userService.addUser(userData);
-        console.log("hii")
+        const token = await authService.login(userData.email,userData.password);
+        res.json({ token })
       }
       res.status(200).json({ message: "Check code." });
 
@@ -57,11 +58,8 @@ router.post("/checkCode", async (req, res) => {
 router.post("/logIn", async function (req, res) {
   const { email, password } = req.body;
   try {
-    const data = await userService.checkLogIn({
-      email,
-      password,
-    });
-    console.log(data.message);
+    const token = await authService.login(email, password);
+    res.json({ token })
     res.status(200).json({ message: data.message });
   } catch (error) {
     console.error(error);
