@@ -3,25 +3,6 @@ const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const { use } = require("../routes/user");
 const userService = {
-  async checkEmail(email) {
-    // Validate email format using a regular expression
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailRegex.test(email.toLowerCase())) {
-      throw new Error(
-        "Invalid email format. Please enter a valid email address."
-      );
-    }
-    // Check for existing user with the same email
-    const existingUser = await user.findOne({ where: { email } });
-    if (existingUser) {
-      throw new Error(
-        "Email address already in use. Please try a different email."
-      );
-    }
-
-    return true;
-  },
   async checkEmailExisting(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -32,13 +13,12 @@ const userService = {
     }
     // Check for existing user with the same email
     const existingUser = await user.findOne({ where: { email } });
-    if (!existingUser) {
-      throw new Error(
-        "Email address already in use. Please try a different email."
-      );
+    if (existingUser) {
+      return existingUser;
+    } else {
+      return false;
     }
 
-    return true;
   },
 
   async sendCode(email) {
@@ -82,13 +62,15 @@ const userService = {
     userData.phone = parseInt(userData.phone);
 
     try {
-      await this.checkEmail(userData.email); // Validate email and throw error if invalid
+      if (await this.checkEmailExisting(userData.email))
+        throw new Error("Email is already existing");
       const checkCode = await this.sendCode(userData.email);
       return { checkCode, userData };
     } catch (error) {
       throw error;
     }
   },
+
   async checkLogIn(userData) {
     if (!userData.email || !userData.password) {
       throw new Error("Missing required fields");
@@ -96,7 +78,7 @@ const userService = {
     email = userData.email;
     try {
       // Check for existing user with the same email
-      const existingUser = await user.findOne({ where: { email } });
+      const existingUser = await this.checkEmailExisting(email);
 
       if (!existingUser) {
         return { message: -1 };
@@ -122,13 +104,18 @@ const userService = {
     }
   },
   async updatePassword(email, newPassword) {
-    const existingUser = await user.findOne({ where: { email } });
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    console.log(newPassword)
     try {
-      existingUser.password = hashedPassword;
-      await existingUser.save();
-      return { message: "Password updated successfully." };
+      const existingUser = await this.checkEmailExisting(email);
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      console.log(newPassword)
+      if (existingUser) {
+
+        existingUser.password = hashedPassword;
+        await existingUser.save();
+        return { message: "Password updated successfully." };
+      }
+      else
+        throw new Error("User not found");
     } catch (error) {
       throw new Error("Error updating password: " + error.message);
     }

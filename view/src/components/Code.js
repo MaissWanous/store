@@ -10,6 +10,7 @@ export default function Code() {
     const url = new URL(referrer);
     const path = url.pathname.split('/').pop();
 
+    console.log(path)
     async function submit(e) {
         e.preventDefault();
         try {
@@ -17,11 +18,11 @@ export default function Code() {
                 checkCode: checkCode,
             });
 
-
             // Check if the response status indicates an error
             if (res.status >= 200 && res.status < 300) {
                 setValidCode(false); // Reset validCode if the response is successful
-                if (path === "SingUp") {
+
+                if (path == "SignUp") {
                     window.location.pathname = '/userHome'
                 } else {
                     window.location.pathname = '/resetPass'

@@ -7,16 +7,9 @@ const router = express.Router();
 
 app.use(express.json());
 
-// app.use(session({
-//     secret: 'secret',
-//     cookie: { maxAge: 3000 },
-//     saveUninitialized: true,
-//     resave: false,
-//     store: new session.MemoryStore()
-// }));
-
 let checkCode = 0;
-
+let userData;
+let emailForget
 router.post("/signup", async (req, res) => {
   const { username, phone, email, password } = req.body;
 
@@ -27,7 +20,7 @@ router.post("/signup", async (req, res) => {
       email,
       password,
     });
-    const userData = data.userData; // التأكد من تعريف userData هنا
+    userData = data.userData;
     console.log(userData);
     // req.session.userData = userData;
     checkCode = parseInt(data.checkCode);
@@ -44,13 +37,15 @@ router.post("/checkCode", async (req, res) => {
   const userCode = parseInt(req.body.checkCode);
   //   const userData = req.session.userData;
   try {
-    if (userCode === checkCode) {
+    console.log(checkCode == userCode)
+
+    if (userCode == checkCode) {
       if (userData) {
         await userService.addUser(userData);
-        res.status(200).json({ message: "User added successfully." });
-      } else {
-        res.status(400).json({ error: "User data not found in session." });
+        console.log("hii")
       }
+      res.status(200).json({ message: "Check code." });
+
     } else {
       res.status(400).json({ error: "Invalid check code." });
     }
@@ -73,15 +68,15 @@ router.post("/logIn", async function (req, res) {
     res.status(500).json({ error: "Invalid data" });
   }
 });
-let checkCodeForget = 0;
-let emailForget;
+
 router.post("/forgetPassword", async function (req, res) {
-  const email = req.body.email;
+  emailForget = req.body.email;
   try {
     const data = await userService.checkEmailExisting(email);
     if (data) {
-      checkCodeForget = await userService.sendCode(email);
-      console.log(checkCodeForget);
+      checkCode = await userService.sendCode(email);
+      console.log(checkCode);
+      res.status(200).send("Email send")
     }
     emailForget = email;
   } catch (error) {
@@ -89,22 +84,20 @@ router.post("/forgetPassword", async function (req, res) {
     res.status(500).json({ error: "Invalid data" });
   }
 });
-router.post("/checkCodeForget", async function (req, res) {
-  const codeForget = parseInt(req.body.checkCode);
-  const { newPassword, confirmPassword } = req.body;
+router.post("/resetPass", async function (req, res) {
+
+  const { password } = req.body;
   try {
-    if (checkCodeForget === codeForget) {
-      if (newPassword === confirmPassword) {
-        const updatePass = await userService.updatePassword(
-          emailForget,
-          newPassword
-        );
-        console.log(updatePass);
-      }
-    }
+    const updatePass = await userService.updatePassword(
+      emailForget,
+      password
+    );
+    console.log(updatePass);
+    res.status(200).send("reset password")
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Invalid data" });
-
-});
+  }
+})
 module.exports = router;
