@@ -1,3 +1,6 @@
+import axios from "axios";
+import { useState } from "react";
+
 export default function ResetPass() {
 
     const [password, setPassword] = useState("");
@@ -14,7 +17,7 @@ export default function ResetPass() {
             let res = await axios.post("http://localhost:2000/resetPass", {
                 password: password
             })
-            setEmailError("")
+
             console.log(res.status)
             if (res.status >= 200 && res.status < 300)
                 window.location.pathname = "/register"

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const userService = require('../services/userService');
+const userService = require('../service/userService');
 
 router.post('/signup', async (req, res) => {
   try {

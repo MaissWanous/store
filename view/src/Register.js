@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios"
+import { User } from './context/context';
 
 export default function Register() {
+    const user = useContext(User)
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [accept, setAccept] = useState(false);
-    let valid;
+    const [valid, setValid] = useState(null);
     async function submit(e) {
         let flag = true
         e.preventDefault();
@@ -21,13 +23,14 @@ export default function Register() {
                     email: email
                     , password: password
                 })
-                console.log(res.data.message)
-                if (res.data.message == 1) {
+                setValid(res.data.message);
+                if (res.data.token) {
                     window.location.pathname = "/userHome"
-                } else {
-                    valid = res.data.message;
+                    let token = res.data.token;
+                    user.setAuth({ token, email, password })
                 }
-                console.log(valid===0)
+
+
             }
 
         } catch (error) {
@@ -63,7 +66,7 @@ export default function Register() {
                         <p className="error">كلمة المرور يجب ان تكون اكبر او تساوي 8 احرف</p>
                     )}
                     {
-                        valid === 0 &&( <p className="error">كلمة المرور المدخلة غير صحيحة !</p>)
+                        valid === 0 && (<p className="error">كلمة المرور المدخلة غير صحيحة !</p>)
                     }
                     <Link to="/email" className="link">نسيت كلمة المرور ؟</Link>
 

@@ -4,13 +4,15 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import "./css/style.css"
 import "./css/card.css";
-
+import userProvider from './context/context';
 
 import { BrowserRouter } from "react-router-dom"
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <BrowserRouter>
-        <App />
+        <userProvider>
+            <App />
+        </userProvider>
     </BrowserRouter>
 
 );

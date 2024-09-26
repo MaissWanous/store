@@ -1,6 +1,6 @@
 const express = require("express");
 const userService = require("../service/userService");
-const authService = require('../services/authService');
+const authService = require('../service/authService');
 
 const app = express();
 const router = express.Router();
@@ -42,7 +42,7 @@ router.post("/checkCode", async (req, res) => {
     if (userCode == checkCode) {
       if (userData) {
         await userService.addUser(userData);
-        const token = await authService.login(userData.email,userData.password);
+        const token = await authService.login(userData.email, userData.password);
         res.json({ token })
       }
       res.status(200).json({ message: "Check code." });
@@ -59,8 +59,7 @@ router.post("/logIn", async function (req, res) {
   const { email, password } = req.body;
   try {
     const token = await authService.login(email, password);
-    res.json({ token })
-    res.status(200).json({ message: data.message });
+    res.status(200).json({ token: token.token, message: token.message });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Invalid data" });
@@ -70,13 +69,13 @@ router.post("/logIn", async function (req, res) {
 router.post("/forgetPassword", async function (req, res) {
   emailForget = req.body.email;
   try {
-    const data = await userService.checkEmailExisting(email);
+    const data = await userService.checkEmailExisting(emailForget);
     if (data) {
-      checkCode = await userService.sendCode(email);
+      checkCode = await userService.sendCode(emailForget);
       console.log(checkCode);
       res.status(200).send("Email send")
     }
-    emailForget = email;
+    
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Invalid data" });
