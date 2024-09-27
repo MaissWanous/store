@@ -34,16 +34,17 @@
 }
 @media (max-width: 780px) {
     .card-columns {
-        display: flex;
-        flex-wrap: wrap; 
-        gap: 12px;
+        -webkit-column-count: 3;
+        -moz-column-count: 3;
+        column-count: 2;
+        -webkit-column-gap: 1.25rem;
+        -moz-column-gap: 1.25rem;
+        column-gap: 1.25rem;
+        orphans: 1;
+         widows: 1; 
     }
-    .card {
-        flex: 0 1 46%; 
-        border-radius: 5px;
-        box-sizing: border-box;
-        height: fit-content;
-       }
+
+    
     
     .card-title {
         font-size: 23px; 
