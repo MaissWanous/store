@@ -34,6 +34,12 @@ body {
 
 }
 
+nav {
+
+    border-bottom: var(--main-color) 1px solid;
+    margin-bottom: 10px;
+}
+
 .register-nav {
     outline: none;
     border: none;
