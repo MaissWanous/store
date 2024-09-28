@@ -9,15 +9,15 @@ export default function UserHome() {
     let token = user.auth.token;
     console.log(token)
     async function refreshToken() {
-        console.log("dd" + token)
+        console.log("dd  " + token)
         try {
             await axios.post("http://localhost:2000/refresh", null, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             }).then((data) => {
-                console.log(data.token)
-                user.setAuth((prev) => { return { ...prev, token: data.token } })
+                console.log(data.data.token)
+                user.setAuth((prev) => { return { ...prev, token: data.data.token } })
             })
         } catch (error) {
             console.log(error)

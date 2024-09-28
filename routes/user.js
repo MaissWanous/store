@@ -1,6 +1,7 @@
 const express = require("express");
 const userService = require("../service/userService");
 const authService = require('../service/authService');
+const jwtService = require("../service/jwtService");
 
 const app = express();
 const router = express.Router();
@@ -75,7 +76,7 @@ router.post("/forgetPassword", async function (req, res) {
       console.log(checkCode);
       res.status(200).send("Email send")
     }
-    
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Invalid data" });
@@ -97,4 +98,32 @@ router.post("/resetPass", async function (req, res) {
     res.status(500).json({ error: "Invalid data" });
   }
 })
+
+router.get("/profile", async (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).json({
+      message: 'Unauthorized: Missing Authorization header'
+    });
+  }
+  const token = authHeader.split(' ')[1];
+  console.log(token)
+  if (!token) {
+    return res.status(401).json({ message: 'Unauthorized: Invalid token format' });
+  }
+  try {
+    const decoded = jwtService.verifyToken(token); // تحقق من صحة Refresh Token
+
+    const user = await userService.findById(decoded.userId); // ابحث عن المستخدم بناءً على معرف المستخدم في التوكن
+    console.log(user)
+    if (!user) return res.status(403).json({ message: 'Forbidden' });
+
+    res.json({ user: user });
+  } catch (error) {
+    console.error(error);
+    res.status(401).json({ message: 'Unauthorized' });
+  }
+}
+)
+
 module.exports = router;
