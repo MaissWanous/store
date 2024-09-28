@@ -1,8 +1,29 @@
 
-import React from 'react';
+import React, { useContext } from 'react';
 import Card from './components/Card';
+import axios from 'axios';
+import { User } from './context/context';
 
 export default function UserHome() {
+    const user = useContext(User)
+    let token = user.auth.token;
+    console.log(token)
+    async function refreshToken() {
+        console.log("dd" + token)
+        try {
+            await axios.post("http://localhost:2000/refresh", null, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).then((data) => {
+                console.log(data.token)
+                user.setAuth((prev) => { return { ...prev, token: data.token } })
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const cardsData = [
         {
             imgSrc: "https://images.unsplash.com/photo-1535025639604-9a804c092faa?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6cb0ceb620f241feb2f859e273634393&auto=format&fit=crop&w=500&q=80",
@@ -38,13 +59,14 @@ export default function UserHome() {
 
     return (
         <div className="container">
+            <button onClick={refreshToken} >Refresh</button>
             <div className="card-columns">
                 {cardsData.map((card, index) => (
-                    <Card 
-                        key={index} 
-                        imgSrc={card.imgSrc} 
-                        title={card.title} 
-                        text={card.text} 
+                    <Card
+                        key={index}
+                        imgSrc={card.imgSrc}
+                        title={card.title}
+                        text={card.text}
                     />
                 ))}
             </div>

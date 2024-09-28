@@ -20,7 +20,15 @@ const userService = {
     }
 
   },
-
+  async findById(ID) {
+    const existingUser = await user.findOne({ where: { ID } });
+    if (existingUser) {
+      return existingUser;
+    } else {
+      return false;
+    }
+  }
+  ,
   async sendCode(email) {
     const confirmCode = Math.floor(1000 + Math.random() * 9000).toString(); // Generate a random 4-digit number
     try {
