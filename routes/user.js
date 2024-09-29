@@ -1,6 +1,10 @@
 const express = require("express");
 const userService = require("../service/userService");
+
 const authService = require('../service/authService');
+
+
+
 const jwtService = require("../service/jwtService");
 
 const app = express();
@@ -162,7 +166,12 @@ router.get( "/profile",  async (req, res) => {
         message: "An error occurred while updating the user information.",
       });
     }
+
 })
+
+
+  
+
 
 
 module.exports = router;

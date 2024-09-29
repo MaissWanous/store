@@ -3,8 +3,48 @@ const app = express();
 const router = express.Router();
 app.use(express.json());
 const productsService = require("../service/productsService");
+const jwtService = require('../service/jwtService');
 router.get("/getProducts", async function (req, res) {
-    const data = await productsService.getProducts();
-    console.log(data);
-})
+  const data = await productsService.getProducts();
+  console.log(data);
+});
+router.get("/reservations", async (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res
+      .status(401)
+      .json({ message: "Unauthorized: Missing Authorization header" });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  if (!token) {
+    return res
+      .status(401)
+      .json({ message: "Unauthorized: Invalid token format" });
+  }
+
+  try {
+    const decoded = jwtService.verifyToken(token);
+    const userId = decoded.userId;
+
+    const reservations = await productsService.getReservationsByUserId(userId);
+
+    if (!reservations || reservations.length === 0) {
+      return res.status(404).json({ message: "No reservations found." });
+    }
+
+    const result = reservations.map((reservation) => ({
+      productName: reservation.product.Name,
+      productPrice: reservation.product.price,
+      reservationDate: reservation.date,
+      productImage: reservation.product.photos[0]?.imagePath || null,
+    }));
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error retrieving reservations." });
+  }
+});
 module.exports = router;

@@ -1,8 +1,4 @@
-post http://localhost:2000/updateUser
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyNzYxNTg5MH0.Oa_4v_lzeC7vsIXFGDZz9nCX0Pr5XYqwAy0CipnKAm0
+get http://localhost:2000/reservations
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcyNzYzMjAzN30.fBzv0NkWQKJi69Wi1hiagU3kUmaHmPvid1o9SbEXAx4
 Content-Type: application/json
 
-{
-  "username": "newUsername",
-  "phone": "1234567890"
-}

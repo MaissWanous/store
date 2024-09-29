@@ -1,5 +1,8 @@
 const { product } = require("../models");
 const { products } = require("../routes/products");
+
+
+const { reservation, photos } = require('../models'); 
 const productsService = {
   async getProducts() {
     try {
@@ -22,5 +25,31 @@ const productsService = {
       throw err;
     }
   },
+
+  async getReservationsByUserId(userId) {
+    try {
+      const reservations = await reservation.findAll({
+        where: { userId: userId },
+        include: [
+          {
+            model: product,
+            attributes: ["Name", "price"],
+            include: [
+              {
+                model: photos,
+                attributes: ["imagePath"],
+              },
+            ],
+          },
+        ],
+        attributes: ["date"],
+      });
+
+      return reservations;
+    } catch (error) {
+      throw new Error("Error retrieving reservations: " + error.message);
+    }
+  },
 };
+
 module.exports = productsService;
