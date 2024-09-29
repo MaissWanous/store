@@ -1,6 +1,10 @@
 const express = require("express");
 const userService = require("../service/userService");
+<<<<<<< HEAD
 const authService = require("../service/authService");
+=======
+const authService = require('../service/authService');
+>>>>>>> afe0eee279e18bc20d26cf84a2b5b7a31da1ff42
 const jwtService = require("../service/jwtService");
 
 const app = express();
@@ -78,6 +82,10 @@ router.post("/forgetPassword", async function (req, res) {
       console.log(checkCode);
       res.status(200).send("Email send");
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> afe0eee279e18bc20d26cf84a2b5b7a31da1ff42
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Invalid data" });
@@ -93,6 +101,7 @@ router.post("/resetPass", async function (req, res) {
     console.error(error);
     res.status(500).json({ error: "Invalid data" });
   }
+<<<<<<< HEAD
 });
 
 router.get(
@@ -164,5 +173,35 @@ router.get(
     }
   })
 );
+=======
+})
+
+router.get("/profile", async (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).json({
+      message: 'Unauthorized: Missing Authorization header'
+    });
+  }
+  const token = authHeader.split(' ')[1];
+  console.log(token)
+  if (!token) {
+    return res.status(401).json({ message: 'Unauthorized: Invalid token format' });
+  }
+  try {
+    const decoded = jwtService.verifyToken(token); // تحقق من صحة Refresh Token
+
+    const user = await userService.findById(decoded.userId); // ابحث عن المستخدم بناءً على معرف المستخدم في التوكن
+    
+    if (!user) return res.status(403).json({ message: 'Forbidden' });
+
+    res.json({ user: user });
+  } catch (error) {
+    console.error(error);
+    res.status(401).json({ message: 'Unauthorized' });
+  }
+}
+)
+>>>>>>> afe0eee279e18bc20d26cf84a2b5b7a31da1ff42
 
 module.exports = router;

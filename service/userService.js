@@ -26,7 +26,12 @@ const userService = {
     } else {
       return false;
     }
+<<<<<<< HEAD
   },
+=======
+  }
+  ,
+>>>>>>> afe0eee279e18bc20d26cf84a2b5b7a31da1ff42
   async sendCode(email) {
     const confirmCode = Math.floor(1000 + Math.random() * 9000).toString(); // Generate a random 4-digit number
     try {
