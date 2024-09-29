@@ -9,5 +9,9 @@ export default function RequireAuth(params) {
     const location = useLocation()
     return token ? (<Outlet />) :
         (<Navigate state={{ from: location }} replace to="/register" />)
+
 }
+
+
+
 

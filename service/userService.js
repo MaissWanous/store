@@ -18,7 +18,6 @@ const userService = {
     } else {
       return false;
     }
-
   },
   async findById(ID) {
     const existingUser = await user.findOne({ where: { ID } });
@@ -27,8 +26,12 @@ const userService = {
     } else {
       return false;
     }
+<<<<<<< HEAD
+  },
+=======
   }
   ,
+>>>>>>> afe0eee279e18bc20d26cf84a2b5b7a31da1ff42
   async sendCode(email) {
     const confirmCode = Math.floor(1000 + Math.random() * 9000).toString(); // Generate a random 4-digit number
     try {
@@ -115,17 +118,25 @@ const userService = {
     try {
       const existingUser = await this.checkEmailExisting(email);
       const hashedPassword = await bcrypt.hash(newPassword, 10);
-      console.log(newPassword)
+      console.log(newPassword);
       if (existingUser) {
-
         existingUser.password = hashedPassword;
         await existingUser.save();
         return { message: "Password updated successfully." };
-      }
-      else
-        throw new Error("User not found");
+      } else throw new Error("User not found");
     } catch (error) {
       throw new Error("Error updating password: " + error.message);
+    }
+  },
+  async updateUser(userId, userData) {
+    try {
+      const existingUser = await this.findById(userId);
+      if (!existingUser) throw new Error("User not found");
+
+      await existingUser.update(userData);
+      return existingUser;
+    } catch (error) {
+      throw new Error("Error updating user: " + error.message);
     }
   },
 };
