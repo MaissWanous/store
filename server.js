@@ -18,7 +18,7 @@ const productRout = require("./routes/products")
 app.use("/", userRout);
 app.use("/", productRout)
 
-// Establish database connection (assuming `db` object is configured correctly in models/index.js)
+// Establish database connection 
 db.sequelize.sync().then(() => {
     app.listen(2000, () => {
         console.log("Server is running on port 3000");

@@ -1,15 +1,14 @@
 
 import React, { useContext } from 'react';
 import Card from './components/Card';
-import axios from 'axios';
-import { User } from './context/context';
+import Cookies from 'universal-cookie';
+
 
 export default function UserHome() {
-    const user = useContext(User)
-    let token = user.auth.token;
-    console.log(token)
-  
+    const cookie = new Cookies();
+    let tokenC = cookie.get("Bearer");
 
+    console.log(tokenC)
     const cardsData = [
         {
             imgSrc: "https://images.unsplash.com/photo-1535025639604-9a804c092faa?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6cb0ceb620f241feb2f859e273634393&auto=format&fit=crop&w=500&q=80",

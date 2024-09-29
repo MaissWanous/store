@@ -2,12 +2,12 @@ import React, { useContext } from 'react';
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios"
-import { User } from './context/context';
-
+import cookies from "universal-cookie"
 export default function Register() {
-    const user = useContext(User)
-    const nav =useNavigate();
-    console.log(user)
+   
+    const cookie = new cookies();
+    let tokenC;
+    const nav = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [accept, setAccept] = useState(false);
@@ -28,7 +28,7 @@ export default function Register() {
                 setValid(res.data.message);
                 if (res.data.token) {
                     let token = res.data.token;
-                    user.setAuth({ token, email, password })
+                    tokenC = cookie.set("Bearer", token)
                     nav("/userHome")
                 }
 
