@@ -115,7 +115,7 @@ router.get("/profile", async (req, res) => {
     const decoded = jwtService.verifyToken(token); // تحقق من صحة Refresh Token
 
     const user = await userService.findById(decoded.userId); // ابحث عن المستخدم بناءً على معرف المستخدم في التوكن
-    console.log(user)
+    
     if (!user) return res.status(403).json({ message: 'Forbidden' });
 
     res.json({ user: user });

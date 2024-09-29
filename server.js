@@ -15,9 +15,7 @@ app.use(express.json());
 // API routes
 const userRout = require("./routes/user");
 const productRout = require("./routes/products")
-const refreshToken = require("./routes/refreshToken")
 app.use("/", userRout);
-app.use("/", refreshToken);
 app.use("/", productRout)
 
 // Establish database connection (assuming `db` object is configured correctly in models/index.js)

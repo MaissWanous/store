@@ -8,21 +8,7 @@ export default function UserHome() {
     const user = useContext(User)
     let token = user.auth.token;
     console.log(token)
-    async function refreshToken() {
-        console.log("dd  " + token)
-        try {
-            await axios.post("http://localhost:2000/refresh", null, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            }).then((data) => {
-                console.log(data.data.token)
-                user.setAuth((prev) => { return { ...prev, token: data.data.token } })
-            })
-        } catch (error) {
-            console.log(error)
-        }
-    }
+  
 
     const cardsData = [
         {
@@ -59,7 +45,6 @@ export default function UserHome() {
 
     return (
         <div className="container">
-            <button onClick={refreshToken} >Refresh</button>
             <div className="card-columns">
                 {cardsData.map((card, index) => (
                     <Card
