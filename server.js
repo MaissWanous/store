@@ -14,7 +14,9 @@ app.use(express.json());
 
 // API routes
 const userRout = require("./routes/user");
+const productRout = require("./routes/products")
 app.use("/", userRout);
+app.use("/", productRout)
 
 // Establish database connection (assuming `db` object is configured correctly in models/index.js)
 db.sequelize.sync().then(() => {

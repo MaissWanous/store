@@ -1,13 +1,30 @@
 
-import React from 'react';
+import React, { useContext } from 'react';
 import Card from './components/Card';
+import axios from 'axios';
+import { User } from './context/context';
 
 export default function UserHome() {
+    const user = useContext(User)
+    let token = user.auth.token;
+    console.log(token)
+  
+
     const cardsData = [
         {
             imgSrc: "https://images.unsplash.com/photo-1535025639604-9a804c092faa?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6cb0ceb620f241feb2f859e273634393&auto=format&fit=crop&w=500&q=80",
             title: "اكواب حافظة ",
-            text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusantium ad alias, aliquid amet aspernatur atque culpa cum debitis dicta doloremque...",
+            text: "Lorem ipsum dolor sit amet,وووووووووووووووووووووووووووووووووووووووووووووووووو consectetur adipisicing elit. Ab accusantium ad alias, aliquid amet aspernatur atque culpa cum debitis dicta doloremque...",
+        },
+        {
+            imgSrc: "https://images.unsplash.com/photo-1535025639604-9a804c092faa?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6cb0ceb620f241feb2f859e273634393&auto=format&fit=crop&w=500&q=80",
+            title: "اكواب حافظة ",
+            text: "Lorem ipsum dolor sit amet,وووووووووووووووووووووووووووووووووووووووووووووووووو consectetur adipisicing elit. Ab accusantium ad alias, aliquid amet aspernatur atque culpa cum debitis dicta doloremque...",
+        },
+        {
+            imgSrc: "https://images.unsplash.com/photo-1535025639604-9a804c092faa?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6cb0ceb620f241feb2f859e273634393&auto=format&fit=crop&w=500&q=80",
+            title: "اكواب حافظة ",
+            text: "Lorem ipsum dolor sit amet,وووووووووووووووووووووووووووووووووووووووووووووووووو consectetur adipisicing elit. Ab accusantium ad alias, aliquid amet aspernatur atque culpa cum debitis dicta doloremque...",
         },
         {
             imgSrc: "https://images.unsplash.com/photo-1472076638602-b1f8b1ac0b4a?ixlib=rb-0.3.5&s=63c9de7246b535be56c8eaff9b87dd89&auto=format&fit=crop&w=500&q=80",
@@ -30,11 +47,11 @@ export default function UserHome() {
         <div className="container">
             <div className="card-columns">
                 {cardsData.map((card, index) => (
-                    <Card 
-                        key={index} 
-                        imgSrc={card.imgSrc} 
-                        title={card.title} 
-                        text={card.text} 
+                    <Card
+                        key={index}
+                        imgSrc={card.imgSrc}
+                        title={card.title}
+                        text={card.text}
                     />
                 ))}
             </div>

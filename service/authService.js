@@ -1,6 +1,6 @@
+
 const jwtService = require('./jwtService');
 const userService = require('./userService');
-
 async function login(email, password) {
     try {
         const user = await userService.checkLogIn({ email, password });
@@ -17,5 +17,6 @@ async function login(email, password) {
         console.log(error)
     }
 }
+
 
 module.exports = { login };
