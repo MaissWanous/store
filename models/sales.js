@@ -22,7 +22,8 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATE
         }
     });
-
+    Product.hasMany(sales)
+    sales.belongsTo(Product)
     return sales;
 
 }
