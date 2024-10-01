@@ -1,28 +1,41 @@
-const { product } = require("../models");
+const { product, classifications } = require("../models");
 const { products } = require("../routes/products");
 
 
-const { reservation, photos } = require('../models'); 
+const { reservation, photos } = require('../models');
 const productsService = {
   async getProducts() {
     try {
-      const AllProducts = await product.findAll({
-        attributes: ["Name", "price", "description"],
-        include: [
-          {
-            model: classifications,
-            attributes: ["classification"],
-          },
-          {
-            model: photos,
-            attributes: ["imagePath"],
-          },
-        ],
-      });
+      const allProducts = await product.findAll();
 
-      console.log(AllProducts);
-    } catch (err) {
-      throw err;
+      // Efficiently join classifications and photos using separate queries:
+      const formattedProducts = await Promise.all(
+        allProducts.map(async (product) => {
+          const productClassifications = await classifications.findAll({
+            where: { productID: product.ID },
+            attributes: ["classification"], // Specify desired classification attributes
+          });
+          const productPhotos = await photos.findAll({
+            where: { productID: product.ID },
+            attributes: ["imagePath"], // Specify desired photo attributes
+          });
+
+          return {
+            ID: product.ID,
+            name: product.Name,
+            price: product.price,
+            description: product.description,
+            classifications: productClassifications.map((classification) => classification.classification),
+            photos: productPhotos.map((photo) => photo.imagePath),
+          };
+        })
+      );
+
+      return formattedProducts;
+    } catch (error) {
+      console.error("Error retrieving products:", error.message);
+      // Handle the error appropriately, e.g., return an error response
+      throw error; // Re-throw the error to allow callers to handle it
     }
   },
 

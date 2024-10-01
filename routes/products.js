@@ -4,9 +4,16 @@ const router = express.Router();
 app.use(express.json());
 const productsService = require("../service/productsService");
 const jwtService = require('../service/jwtService');
-router.get("/getProducts", async function (req, res) {
-  const data = await productsService.getProducts();
-  console.log(data);
+router.get('/getProducts', async (req, res) => {
+  try {
+    const products = await productsService.getProducts();
+    res.json(products);
+  } catch (error) {
+    console.error('Error retrieving products:', error);
+    res.status(500).json({
+      message: 'Failed to retrieve products'
+    });
+  }
 });
 router.get("/reservations", async (req, res) => {
   const authHeader = req.headers.authorization;
