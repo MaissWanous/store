@@ -41,14 +41,7 @@ router.get("/reservations", async (req, res) => {
       return res.status(404).json({ message: "No reservations found." });
     }
 
-    const result = reservations.map((reservation) => ({
-      productName: reservation.product.Name,
-      productPrice: reservation.product.price,
-      reservationDate: reservation.date,
-      productImage: reservation.product.photos[0]?.imagePath || null,
-    }));
-
-    res.status(200).json(result);
+    res.status(200).json(reservations[0].dataValues);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error retrieving reservations." });

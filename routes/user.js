@@ -1,10 +1,6 @@
 const express = require("express");
 const userService = require("../service/userService");
-
 const authService = require('../service/authService');
-
-
-
 const jwtService = require("../service/jwtService");
 
 const app = express();

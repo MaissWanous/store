@@ -1,7 +1,4 @@
 const { product, classifications } = require("../models");
-const { products } = require("../routes/products");
-
-
 const { reservation, photos } = require('../models');
 const productsService = {
   async getProducts() {
@@ -42,27 +39,43 @@ const productsService = {
   async getReservationsByUserId(userId) {
     try {
       const reservations = await reservation.findAll({
-        where: { userId: userId },
-        include: [
-          {
-            model: product,
-            attributes: ["Name", "price"],
-            include: [
-              {
-                model: photos,
-                attributes: ["imagePath"],
-              },
-            ],
-          },
-        ],
-        attributes: ["date"],
-      });
+        where: { userId },
 
-      return reservations;
+      });
+      const formattedReservations = reservations.map(async (reservation) => {
+        let produc = null;
+        let phot = []; // Use an empty array
+
+        if (reservation.productId) {
+          try {
+            produc = await product.findOne({
+              where: { ID: reservation.productId },
+              attributes: ["Name", "price"], // Include needed product attributes
+            });
+          } catch (error) {
+            console.warn("Product not found for reservation", reservation.id);
+          }
+        }
+
+        // if (produc) { // Check if product exists before fetching photos
+        //   phot = await photos.findAll({
+        //     where: { productID: product.ID },
+        //     attributes: ["imagePath"],
+        //   });
+        // }
+
+        return {
+          ...reservation,
+          produc,
+          phot,
+        };
+      });
+      console.log(formattedReservations)
+      return await Promise.all(formattedReservations);
     } catch (error) {
       throw new Error("Error retrieving reservations: " + error.message);
     }
-  },
+  }
 };
 
 module.exports = productsService;
