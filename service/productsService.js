@@ -1,5 +1,9 @@
+
 const { product, classifications } = require("../models");
-const { reservation, photos } = require('../models');
+const { reservation, photos,productColors } = require('../models');
+
+;
+
 const productsService = {
   async getProducts() {
     try {
@@ -35,47 +39,109 @@ const productsService = {
       throw error; // Re-throw the error to allow callers to handle it
     }
   },
-
   async getReservationsByUserId(userId) {
     try {
       const reservations = await reservation.findAll({
         where: { userId },
-
       });
-      const formattedReservations = reservations.map(async (reservation) => {
+  
+      const formattedReservations = await Promise.all(reservations.map(async (reservation) => {
         let produc = null;
-        let phot = []; // Use an empty array
-
+        let phot = []; 
+  
+      
         if (reservation.productId) {
+          console.log("Reservation ID:", reservation.id);
+          console.log("Product ID:", reservation.productId); 
+  
           try {
             produc = await product.findOne({
               where: { ID: reservation.productId },
-              attributes: ["Name", "price"], // Include needed product attributes
+              attributes: ["Name", "price", "ID"], 
             });
+  
+            if (produc) {
+              console.log("Product ID:", produc.dataValues.ID); 
+            } else {
+              console.warn("No product found for reservation", reservation.id);
+            }
           } catch (error) {
             console.warn("Product not found for reservation", reservation.id);
           }
         }
-
-        // if (produc) { // Check if product exists before fetching photos
-        //   phot = await photos.findAll({
-        //     where: { productID: product.ID },
-        //     attributes: ["imagePath"],
-        //   });
-        // }
-
+  
+        if (produc) { 
+          phot = await photos.findAll({
+            where: { productID: produc.dataValues.ID },
+            attributes: ["imagePath"],
+          });
+        } else {
+          console.warn("No product found for reservation", reservation.id);
+        }
+  
         return {
-          ...reservation,
-          produc,
-          phot,
+          ...reservation.dataValues,
+          price: produc ? produc.dataValues.price : null,
+          name: produc ? produc.dataValues.Name : null,
+          photos: phot.map((photo) => photo.imagePath),
         };
-      });
-      console.log(formattedReservations)
-      return await Promise.all(formattedReservations);
+      }));
+  
+      return formattedReservations; 
     } catch (error) {
       throw new Error("Error retrieving reservations: " + error.message);
     }
+  },
+  async getProductDetailsById(productId) {
+    try {
+     
+      const productDetails = await product.findOne({
+        where: { ID: productId },
+      });
+  
+      if (!productDetails) {
+        throw new Error("Product not found");
+      }
+  
+      
+      const productPhotos = await photos.findAll({
+        where: { productID: productId },
+        attributes: ["imagePath"],
+      });
+  
+      
+      const colorsPromises = productPhotos.map(async (photo) => {
+        const colors = await productColors.findAll({
+          where: { ID: photos.colorID }, 
+          attributes: ["Name", "number"],
+        });
+        return {
+          imagePath: productPhotos.imagePath,
+          colors: colors.map(color => ({
+            name: color.Name,
+            quantity: color.number,
+          })),
+        };
+      });
+  
+      const photosWithColors = await Promise.all(colorsPromises);
+  
+      
+      const formattedProductDetails = {
+        ID: productDetails.ID,
+        name: productDetails.Name,
+        price: productDetails.price,
+        description: productDetails.description,
+        photos: photosWithColors,
+      };
+  
+      return formattedProductDetails;
+    } catch (error) {
+      console.error("Error retrieving product details:", error.message);
+      throw new Error("Error retrieving product details: " + error.message);
+    }
   }
+  
 };
 
 module.exports = productsService;
