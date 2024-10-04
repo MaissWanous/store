@@ -112,7 +112,7 @@ const productsService = {
       
       const colorsPromises = productPhotos.map(async (photo) => {
         const colors = await productColors.findAll({
-          where: { ID: photos.colorID }, 
+          where: { ID: photo.colorID }, 
           attributes: ["Name", "number"],
         });
         return {

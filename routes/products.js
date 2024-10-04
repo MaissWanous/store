@@ -47,15 +47,16 @@ router.get("/reservations", async (req, res) => {
       console.error(error);
       res.status(500).json({ message: "Error retrieving reservations." });
     }
-    router.post("/productDetails", async function(req, res) {
-        const id = req.body.id; 
-        try {
-            const productDetails = await productsService.getProductDetailsById(id);
-            res.status(200).json(productDetails);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-    });
-    
+
   });
+  router.post("/productDetails", async function(req, res) {
+    const id = req.body.id; 
+    try {
+        const productDetails = await productsService.getProductDetailsById(id);
+        res.status(200).json(productDetails);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 module.exports = router;
