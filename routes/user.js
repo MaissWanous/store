@@ -164,6 +164,48 @@ router.get( "/profile",  async (req, res) => {
     }
 
 })
+router.post("/reservation",async function(req,res){
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res
+      .status(401)
+      .json({ message: "Unauthorized: Missing Authorization header" });
+  }
+  
+  const token = authHeader.split(" ")[1];
+  const {colorId,productID,delivery} = req.body;
+
+  if (!token) {
+    return res
+      .status(401)
+      .json({ message: "Unauthorized: Invalid token format" });
+  }
+  try{
+    const decoded = jwtService.verifyToken(token);
+    const userId = decoded.userId;
+    const date = new Date(); 
+    const currentDate = date.toISOString();
+    const reservation = await userService.reservation(userId,{
+      colorId,
+      productID,
+      date: currentDate,
+      delivery,
+      locationID,
+      hour,
+    });
+    res.status(200).json({
+      message: "reservation successfully.",
+      reservation: reservation,
+    });
+  }catch(error) {
+    console.error(error);
+    res.status(500).json({
+      message: "An error occurred while making the reservation",
+    });
+  }
+}
+
+)
 
 
   

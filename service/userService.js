@@ -1,4 +1,4 @@
-const { user } = require("../models");
+const { user, reservation, delivery_info } = require("../models");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const { use } = require("../routes/user");
@@ -26,10 +26,7 @@ const userService = {
     } else {
       return false;
     }
-
   },
-
-
 
   async sendCode(email) {
     const confirmCode = Math.floor(1000 + Math.random() * 9000).toString(); // Generate a random 4-digit number
@@ -136,6 +133,32 @@ const userService = {
       return existingUser;
     } catch (error) {
       throw new Error("Error updating user: " + error.message);
+    }
+  },
+  async reservation(userId, reservationInfo) {
+    try {
+      const newReservation = await reservation.create({
+        userId: userId,
+        productId: reservationInfo.productID,
+        colorID: reservationInfo.colorId,
+        date: reservationInfo.date,
+        status: "new",
+      });
+      const reservationId = newReservation.id;
+      if (reservationInfo.delivery) {
+        const ReservationDelivery = await delivery_info.create({
+          reservationID: reservationId,
+          locationID: reservationInfo.locationID,
+          hour: reservationInfo.hour,
+          date: reservationInfo.date,
+        });
+        return { newReservation, ReservationDelivery };
+      } else {
+        return newReservation;
+      }
+    } catch (error) {
+      console.error("Error creating reservation:", error.message);
+      throw new Error("Error creating reservation: " + error.message);
     }
   },
 };
