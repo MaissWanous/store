@@ -12,6 +12,7 @@ import UserHome from "./UserHome";
 import ResetPass from "./components/resetPass";
 import RequireAuth from "./RequireAuth";
 import PersistLogin from "./context/persistLogin";
+import Profile from "./profile";
 
 function App() {
   return (
@@ -24,9 +25,10 @@ function App() {
         <Route path="/code" element={<Code />} />
         {/* <Route element={<PersistLogin />}> */}
         <Route element={<RequireAuth />}>
-          <Route path="/userHome" element={<UserHome />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
         {/* </Route> */}
+        <Route path="/userHome" element={<UserHome />} />
         <Route path="/resetPass" element={<ResetPass />} />
       </Routes>
     </div>
