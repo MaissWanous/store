@@ -1,6 +1,6 @@
 const express = require("express");
 const userService = require("../service/userService");
-const authService = require('../service/authService');
+const authService = require("../service/authService");
 const jwtService = require("../service/jwtService");
 
 const app = express();
@@ -78,7 +78,6 @@ router.post("/forgetPassword", async function (req, res) {
       console.log(checkCode);
       res.status(200).send("Email send");
     }
-
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Invalid data" });
@@ -94,37 +93,35 @@ router.post("/resetPass", async function (req, res) {
     console.error(error);
     res.status(500).json({ error: "Invalid data" });
   }
-
 });
 
-router.get( "/profile",  async (req, res) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
-      return res.status(401).json({
-        message: "Unauthorized: Missing Authorization header",
-      });
-    }
-    const token = authHeader.split(" ")[1];
-    console.log(token);
-    if (!token) {
-      return res
-        .status(401)
-        .json({ message: "Unauthorized: Invalid token format" });
-    }
-    try {
-      const decoded = jwtService.verifyToken(token); // تحقق من صحة Refresh Token
+router.get("/profile", async (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).json({
+      message: "Unauthorized: Missing Authorization header",
+    });
+  }
+  const token = authHeader.split(" ")[1];
+  console.log(token);
+  if (!token) {
+    return res
+      .status(401)
+      .json({ message: "Unauthorized: Invalid token format" });
+  }
+  try {
+    const decoded = jwtService.verifyToken(token); // تحقق من صحة Refresh Token
 
-      const user = await userService.findById(decoded.userId); // ابحث عن المستخدم بناءً على معرف المستخدم في التوكن
+    const user = await userService.findById(decoded.userId); // ابحث عن المستخدم بناءً على معرف المستخدم في التوكن
 
-      if (!user) return res.status(403).json({ message: "Forbidden" });
+    if (!user) return res.status(403).json({ message: "Forbidden" });
 
-      res.json({ user: user });
-    } catch (error) {
-      console.error(error);
-      res.status(401).json({ message: "Unauthorized" });
-    }
-  }),
-
+    res.json({ user: user });
+  } catch (error) {
+    console.error(error);
+    res.status(401).json({ message: "Unauthorized" });
+  }
+}),
   router.post("/updateUser", async (req, res) => {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
@@ -162,54 +159,74 @@ router.get( "/profile",  async (req, res) => {
         message: "An error occurred while updating the user information.",
       });
     }
-
-})
-router.post("/reservation",async function(req,res){
+  });
+router.post("/reservation", async function (req, res) {
   const authHeader = req.headers.authorization;
   if (!authHeader) {
     return res
       .status(401)
       .json({ message: "Unauthorized: Missing Authorization header" });
   }
-  
+
   const token = authHeader.split(" ")[1];
-  const {colorId,productID,delivery} = req.body;
+  const { colorId, productID, delivery, locationID, hour, deliveryDate } =
+    req.body;
 
   if (!token) {
     return res
       .status(401)
       .json({ message: "Unauthorized: Invalid token format" });
   }
-  try{
+  try {
     const decoded = jwtService.verifyToken(token);
     const userId = decoded.userId;
-    const date = new Date(); 
+    const date = new Date();
     const currentDate = date.toISOString();
-    const reservation = await userService.reservation(userId,{
+    const reservation = await userService.reservation(userId, {
       colorId,
       productID,
       date: currentDate,
       delivery,
       locationID,
       hour,
+      deliveryDate,
     });
     res.status(200).json({
       message: "reservation successfully.",
       reservation: reservation,
     });
-  }catch(error) {
+  } catch (error) {
     console.error(error);
     res.status(500).json({
       message: "An error occurred while making the reservation",
     });
   }
-}
-
-)
-
-
-  
-
-
+});
+router.get("/getLocation", async function (req, res) {
+  try {
+    const locations = await userService.getLocation();
+    if (!locations) {
+      res.status(401).json({ message: "no found locations" });
+    } else {
+      res.json({ locations: locations });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(401).json({ message: "Error retrieving location" });
+  }
+});
+router.get("/getHours", async function (req, res) {
+  try {
+    const hours = await userService.getHours();
+    if (!hours) {
+      res.status(401).json({ message: "no found hours" });
+    } else {
+      res.json({ hours: hours });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(401).json({ message: "Error retrieving hours" });
+  }
+});
 
 module.exports = router;

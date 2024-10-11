@@ -1,4 +1,4 @@
-const { user, reservation, delivery_info } = require("../models");
+const { user, reservation, delivery_info, location,hours } = require("../models");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const { use } = require("../routes/user");
@@ -150,7 +150,7 @@ const userService = {
           reservationID: reservationId,
           locationID: reservationInfo.locationID,
           hour: reservationInfo.hour,
-          date: reservationInfo.date,
+          date: reservationInfo.deliveryDate,
         });
         return { newReservation, ReservationDelivery };
       } else {
@@ -159,6 +159,22 @@ const userService = {
     } catch (error) {
       console.error("Error creating reservation:", error.message);
       throw new Error("Error creating reservation: " + error.message);
+    }
+  },
+  async getLocation() {
+    const locations = await location.findAll();
+    if (locations) {
+      return locations;
+    } else {
+      return false;
+    }
+  },
+  async getHours() {
+    const hour= await hours.findAll();
+    if (hour) {
+      return hour;
+    } else {
+      return false;
     }
   },
 };
