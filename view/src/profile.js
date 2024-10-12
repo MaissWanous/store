@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Cookies from 'universal-cookie';
 // import { FaUser, FaPhone, FaEnvelope } from 'react-icons/fa'; // استيراد الأيقونات
 
 export default function Profile() {
+    const cookie = new Cookies();
+    let token = cookie.get("Bearer");
+    console.log(token)
+
     const [userData, setUserData] = useState({
         name: '',
         phone: '',
@@ -10,19 +15,25 @@ export default function Profile() {
     });
 
     useEffect(() => {
-        // استدعاء API لجلب المعلومات الشخصية للمستخدم
-        axios.get('/profile') // تأكد من تعديل الرابط حسب API الخاص بك
+
+        axios.get('http://localhost:2000/profile', {
+            headers: {
+                authorization: 'Bearer ' + token
+            }
+        })
+
             .then(response => {
+                console.log(response.data)
                 setUserData({
-                    name: response.data.name,
-                    phone: response.data.phone,
-                    email: response.data.email
+                    name: response.data.user.username,
+                    phone: response.data.user.phone,
+                    email: response.data.user.email
                 });
             })
             .catch(error => {
                 console.error('Error fetching user data:', error);
             });
-    }, []);
+    }, [token]);
 
     return (
         <div className="container">
@@ -31,29 +42,29 @@ export default function Profile() {
                     <div className="form">
                         <label className="label" htmlFor="name">الاسم</label>
                         {/* <FaUser className="icon" /> */}
-                        <div 
-                            type="text" 
-                            id="name" 
-                            value={userData.name} 
-                            onChange={(e) => setUserData({...userData, name: e.target.value})} 
+                        <input
+                            type="text"
+                            id="name"
+                            value={userData.name}
+                            onChange={(e) => setUserData({ ...userData, name: e.target.value })}
                         />
-
                         <label className="label" htmlFor="phone">رقم الموبايل</label>
                         {/* <FaPhone className="icon" /> */}
-                        <div 
-                            type="text" 
-                            id="phone" 
-                            value={userData.phone} 
-                            onChange={(e) => setUserData({...userData, phone: e.target.value})} 
+                        <input
+                            type="text"
+                            id="phone"
+                            value={userData.phone}
+                            onChange={(e) => setUserData({ ...userData, phone: e.target.value })}
                         />
+
 
                         <label className="label" htmlFor="email">البريد الإلكتروني</label>
                         {/* <FaEnvelope className="icon" /> */}
-                        <div 
-                            type="email" 
-                            id="email" 
-                            value={userData.email} 
-                            onChange={(e) => setUserData({...userData, email: e.target.value})} 
+                        <input
+                            type="email"
+                            id="email"
+                            value={userData.email}
+                            onChange={(e) => setUserData({ ...userData, email: e.target.value })}
                         />
                     </div>
                 </div>

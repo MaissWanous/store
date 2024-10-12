@@ -97,13 +97,14 @@ router.post("/resetPass", async function (req, res) {
 
 router.get("/profile", async (req, res) => {
   const authHeader = req.headers.authorization;
+  console.log(authHeader)
   if (!authHeader) {
     return res.status(401).json({
       message: "Unauthorized: Missing Authorization header",
     });
   }
   const token = authHeader.split(" ")[1];
-  console.log(token);
+  console.log(token)
   if (!token) {
     return res
       .status(401)
