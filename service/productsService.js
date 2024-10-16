@@ -1,6 +1,6 @@
 
 const { product, classifications } = require("../models");
-const { reservation, photos,productColors } = require('../models');
+const { reservation, photos, productColors } = require('../models');
 
 ;
 
@@ -39,29 +39,45 @@ const productsService = {
       throw error; // Re-throw the error to allow callers to handle it
     }
   },
+  async getClassification() {
+    try {
+      const distinctClassifications = await classifications.findAll({
+        attributes: ['classification'], 
+        group: ['classification'] 
+      });
+
+      
+      const classificationsArray = distinctClassifications.map(item => item.classification);
+
+      console.log(classificationsArray);
+      return classificationsArray;
+    } catch (error) {
+      console.error('Error fetching distinct classifications:', error);
+    }
+  },
   async getReservationsByUserId(userId) {
     try {
       const reservations = await reservation.findAll({
         where: { userId },
       });
-  
+
       const formattedReservations = await Promise.all(reservations.map(async (reservation) => {
         let produc = null;
-        let phot = []; 
-  
-      
+        let phot = [];
+
+
         if (reservation.productId) {
           console.log("Reservation ID:", reservation.id);
-          console.log("Product ID:", reservation.productId); 
-  
+          console.log("Product ID:", reservation.productId);
+
           try {
             produc = await product.findOne({
               where: { ID: reservation.productId },
-              attributes: ["Name", "price", "ID"], 
+              attributes: ["Name", "price", "ID"],
             });
-  
+
             if (produc) {
-              console.log("Product ID:", produc.dataValues.ID); 
+              console.log("Product ID:", produc.dataValues.ID);
             } else {
               console.warn("No product found for reservation", reservation.id);
             }
@@ -69,8 +85,8 @@ const productsService = {
             console.warn("Product not found for reservation", reservation.id);
           }
         }
-  
-        if (produc) { 
+
+        if (produc) {
           phot = await photos.findAll({
             where: { productID: produc.dataValues.ID },
             attributes: ["imagePath"],
@@ -78,7 +94,7 @@ const productsService = {
         } else {
           console.warn("No product found for reservation", reservation.id);
         }
-  
+
         return {
           ...reservation.dataValues,
           price: produc ? produc.dataValues.price : null,
@@ -86,33 +102,33 @@ const productsService = {
           photos: phot.map((photo) => photo.imagePath),
         };
       }));
-  
-      return formattedReservations; 
+
+      return formattedReservations;
     } catch (error) {
       throw new Error("Error retrieving reservations: " + error.message);
     }
   },
   async getProductDetailsById(productId) {
     try {
-     
+
       const productDetails = await product.findOne({
         where: { ID: productId },
       });
-  
+
       if (!productDetails) {
         throw new Error("Product not found");
       }
-  
-      
+
+
       const productPhotos = await photos.findAll({
         where: { productID: productId },
         attributes: ["imagePath"],
       });
-  
-      
+
+
       const colorsPromises = productPhotos.map(async (photo) => {
         const colors = await productColors.findAll({
-          where: { ID: photo.colorID }, 
+          where: { ID: photo.colorID },
           attributes: ["Name", "number"],
         });
         return {
@@ -123,10 +139,10 @@ const productsService = {
           })),
         };
       });
-  
+
       const photosWithColors = await Promise.all(colorsPromises);
-  
-      
+
+
       const formattedProductDetails = {
         ID: productDetails.ID,
         name: productDetails.Name,
@@ -134,14 +150,14 @@ const productsService = {
         description: productDetails.description,
         photos: photosWithColors,
       };
-  
+
       return formattedProductDetails;
     } catch (error) {
       console.error("Error retrieving product details:", error.message);
       throw new Error("Error retrieving product details: " + error.message);
     }
   }
-  
+
 };
 
 module.exports = productsService;

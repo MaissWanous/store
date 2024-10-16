@@ -110,7 +110,7 @@ const FAQ = () => {
   };
 
   return (
-    <Container>
+    <div className="container">
       <Title>الأسئلة الشائعة (FAQ)</Title>
       {faqs.map((faq, index) => (
         <div key={index}>
@@ -121,7 +121,7 @@ const FAQ = () => {
           {activeIndex === index && <Answer>{faq.answer}</Answer>}
         </div>
       ))}
-    </Container>
+    </div>
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
-// import { FaUser, FaPhone, FaEnvelope } from 'react-icons/fa'; // استيراد الأيقونات
+import { FaUser, FaPhone, FaEnvelope } from 'react-icons/fa'; 
 
 export default function Profile() {
     const cookie = new Cookies();
@@ -41,7 +41,7 @@ export default function Profile() {
                 <div className="register">
                     <div className="form">
                         <label className="label" htmlFor="name">الاسم</label>
-                        {/* <FaUser className="icon" /> */}
+                        <FaUser className="icon" />
                         <input
                             type="text"
                             id="name"
@@ -49,7 +49,7 @@ export default function Profile() {
                             onChange={(e) => setUserData({ ...userData, name: e.target.value })}
                         />
                         <label className="label" htmlFor="phone">رقم الموبايل</label>
-                        {/* <FaPhone className="icon" /> */}
+                        <FaPhone className="icon" />
                         <input
                             type="text"
                             id="phone"
@@ -59,7 +59,7 @@ export default function Profile() {
 
 
                         <label className="label" htmlFor="email">البريد الإلكتروني</label>
-                        {/* <FaEnvelope className="icon" /> */}
+                        <FaEnvelope className="icon" />
                         <input
                             type="email"
                             id="email"

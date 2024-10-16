@@ -200,9 +200,32 @@ input::placeholder {
         padding-right: 10px;
     }
 }
-/* icon */
-.icon {
-    font-size: 24px; /* حجم الأيقونة */
-    margin-right: 5px; /* مسافة بين الأيقونة والإيموجي */
+
+/* filter button */
+
+.button_grp ul{
+	display: flex;
 }
+
+.button_grp ul li{
+	background: #fff;
+	margin: 10px;
+	padding: 10px 15px;
+	min-width: 80px;
+	text-align: center;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	box-shadow: var(--input-shadow);
+}
+
+.button_grp ul li.active{
+	background:var(--main-color);
+	color: #fff;
+}
+.button_grp ul li:hover{
+    background-color: var(--main-color-light);
+    color: #fff;
+}
+
 
