@@ -6,36 +6,33 @@ import axios from 'axios';
 
 
 export default function UserHome() {
-    const cookie = new Cookies();
-    let tokenC = cookie.get("Bearer");
-    console.log(tokenC)
+    // const cookie = new Cookies();
+    // let tokenC = cookie.get("Bearer");
+    // console.log(tokenC)
     const [cardsData, setCardsData] = useState([]);
-
+    const [selectedClassification, setSelectedClassification] = useState('all');
+    const [classifications, setClassifications] = useState(["all"]);
     useEffect(() => {
         const fetchData = async () => {
-            axios.get('http://localhost:2000/getProducts')
-                .then(response => {
-                    // console.log(response.data)
-                    setCardsData(response.data);
-                })
-                .catch(error => {
-                    console.error('Error fetching user data:', error);
-                });
-            axios.get('http://localhost:2000/classification')
-                .then(response => {
-                    console.log(response.data)
-                    setCardsData(response.data);
-                })
-                .catch(error => {
-                    console.error('Error fetching user data:', error);
-                });
+            try {
+                const productsResponse = await axios.get('http://localhost:2000/getProducts');
+                setCardsData(productsResponse.data);
+                console.log(productsResponse.data)
+            } catch (error) {
+                console.error('Error fetching products data:', error);
+            }
 
-
+            try {
+                const classificationResponse = await axios.get('http://localhost:2000/classification');
+                setClassifications(["all", ...classificationResponse.data])
+            } catch (error) {
+                console.error('Error fetching classification data:', error);
+            }
         };
 
         fetchData();
     }, []);
-
+    console.log(classifications)
     // const cardsData = [
     //     {
     //         imgSrc: "https://images.unsplash.com/photo-1535025639604-9a804c092faa?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6cb0ceb620f241feb2f859e273634393&auto=format&fit=crop&w=500&q=80",
@@ -73,27 +70,39 @@ export default function UserHome() {
         <div className="container">
             <div className="button_grp">
                 <ul>
-                    <li data-li="all" className="btn active">All</li>
-                    <li data-li="folders" className="btn">Folders</li>
-                    <li data-li="files" className="btn">Files</li>
-                    <li data-li="images" className="btn">Images</li>
-                    <li data-li="sheets" className="btn">Sheets</li>
-                    <li data-li="pdfs" className="btn">PDFs</li>
-                    <li data-li="documents" className="btn">Documents</li>
+                    {classifications.map((classification) => (
+                        <li
+                            key={classification}
+                            data-li={classification}
+
+                            className={selectedClassification === classification ? 'btn active' : 'btn'}
+                            onClick={() => setSelectedClassification(classification)}
+                        >
+                            {classification.charAt(0).toUpperCase() + classification.slice(1)}
+                        </li>
+                    ))}
                 </ul>
             </div>
 
 
             <div className="card-columns">
-                {cardsData.map((card, index) => (
+            {cardsData
+                .filter(card => 
+                    selectedClassification === 'all' || card.classifications.includes(selectedClassification)
+                )
+                .map((card, index) => (
                     <Card
                         key={index}
                         imgSrc={card.photos[0]}
                         title={card.name}
                         text={card.description}
+                        price={card.price}
+                        classf={card.classifications.map((classification, i) => (
+                            <span key={i}>{classification}</span>
+                        ))}
                     />
                 ))}
-            </div>
+        </div>
         </div>
     );
 }
