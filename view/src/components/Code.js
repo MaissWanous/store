@@ -23,7 +23,7 @@ export default function Code() {
                 setValidCode(false); // Reset validCode if the response is successful
 
                 if (path == "SignUp") {
-                    window.location.pathname = '/userHome'
+                    window.location.pathname = '/'
                 } else {
                     window.location.pathname = '/resetPass'
                 }

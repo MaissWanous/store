@@ -6,9 +6,6 @@ import axios from 'axios';
 
 
 export default function UserHome() {
-    // const cookie = new Cookies();
-    // let tokenC = cookie.get("Bearer");
-    // console.log(tokenC)
     const [cardsData, setCardsData] = useState([]);
     const [selectedClassification, setSelectedClassification] = useState('all');
     const [classifications, setClassifications] = useState(["all"]);
@@ -32,7 +29,7 @@ export default function UserHome() {
 
         fetchData();
     }, []);
-    console.log(classifications)
+
     // const cardsData = [
     //     {
     //         imgSrc: "https://images.unsplash.com/photo-1535025639604-9a804c092faa?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6cb0ceb620f241feb2f859e273634393&auto=format&fit=crop&w=500&q=80",

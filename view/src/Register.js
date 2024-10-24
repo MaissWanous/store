@@ -29,7 +29,7 @@ export default function Register() {
                 if (res.data.token) {
                     let token = res.data.token;
                     tokenC = cookie.set("Bearer", token)
-                    nav("/userHome")
+                    nav("/")
                 }
 
 
