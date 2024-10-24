@@ -287,3 +287,12 @@ input::placeholder {
     margin-bottom: 12px;
     box-shadow: 0px 5px 12px -4px rgb(0 0 0 / 10%);
 }
+
+.whats {
+    position: fixed;
+    font-size: 50px;
+    bottom: 2%;
+    left: 3%;
+    color: lightgreen;
+    z-index: 400;
+}

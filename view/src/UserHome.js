@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import Card from './components/Card';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
+import { FaWhatsapp } from 'react-icons/fa';
 
 
 export default function UserHome() {
@@ -83,23 +84,29 @@ export default function UserHome() {
 
 
             <div className="card-columns">
-            {cardsData
-                .filter(card => 
-                    selectedClassification === 'all' || card.classifications.includes(selectedClassification)
-                )
-                .map((card, index) => (
-                    <Card
-                        key={index}
-                        imgSrc={card.photos[0]}
-                        title={card.name}
-                        text={card.description}
-                        price={card.price}
-                        classf={card.classifications.map((classification, i) => (
-                            <span key={i}>{classification}</span>
-                        ))}
-                    />
-                ))}
-        </div>
+                {cardsData
+                    .filter(card =>
+                        selectedClassification === 'all' || card.classifications.includes(selectedClassification)
+                    )
+                    .map((card, index) => (
+                        <Card
+                            key={index}
+                            imgSrc={card.photos[0]}
+                            title={card.name}
+                            text={card.description}
+                            price={card.price}
+                            classf={card.classifications.map((classification, i) => (
+                                <span key={i}>{classification}</span>
+                            ))}
+                        />
+                    ))}
+            </div>
+            <>
+                <a href='https://wa.me/998498975'>
+                    <FaWhatsapp className='whats' />
+                </a>
+
+            </>
         </div>
     );
 }
