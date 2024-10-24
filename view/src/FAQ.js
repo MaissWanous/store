@@ -1,55 +1,7 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import './css/faq.css';
 import { FaPlus, FaMinus } from 'react-icons/fa';
 
-const Container = styled.div`
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-`;
-
-const Title = styled.h2`
-  text-align: center;
-  color: #333;
-  margin-bottom: 20px;
-`;
-
-const Question = styled.h3`
-  cursor: pointer;
-  margin: 15px 0;
-  color: #800080; /* لون موف */
-  background-color: #ffccff; /* لون زهر */
-  padding: 10px; /* تقليل الحشو */
-  border-radius: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1.1em; /* حجم الخط */
-  transition: background-color 0.3s ease, transform 0.3s ease;
-
-  &:hover {
-    background-color: #e6b3e6; /* لون زهر أغمق عند المرور */
-    transform: scale(1.02); /* تأثير تكبير عند المرور */
-  }
-`;
-
-const Answer = styled.p`
-  background-color: #f8f9fa;
-  padding: 10px; /* تقليل الحشو */
-  border-radius: 5px;
-  margin: 10px 0;
-  border-left: 4px solid #800080; /* خط جانبي ملون */
-  color: #555;
-  font-size: 0.95em; /* حجم خط أصغر للإجابة */
-`;
-
-const Icon = styled.span`
-  font-size: 1em; /* حجم الأيقونات */
-  color: #800080; /* لون موف */
-`;
 
 const FAQ = () => {
   const [activeIndex, setActiveIndex] = useState(null);
@@ -111,14 +63,14 @@ const FAQ = () => {
 
   return (
     <div className="container">
-      <Title>الأسئلة الشائعة (FAQ)</Title>
+      <h1 className="title">الأسئلة الشائعة</h1>
       {faqs.map((faq, index) => (
-        <div key={index}>
-          <Question onClick={() => toggleAnswer(index)}>
+        <div key={index} className="faq-item">
+          <div className="question" onClick={() => toggleAnswer(index)}>
             {faq.question}
-            <Icon>{activeIndex === index ? <FaMinus /> : <FaPlus />}</Icon>
-          </Question>
-          {activeIndex === index && <Answer>{faq.answer}</Answer>}
+            <span className="icon">{activeIndex === index ? <FaMinus /> : <FaPlus />}</span>
+          </div>
+          {activeIndex === index && <div className="answer">{faq.answer}</div>}
         </div>
       ))}
     </div>
