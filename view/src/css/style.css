@@ -226,7 +226,7 @@ input::placeholder {
     background: #fff;
     margin: 7px;
     padding: 10px 15px;
-    min-width: 80px;
+    width: fit-content;
     text-align: center;
     border-radius: var(--border-radius);
     cursor: pointer;
@@ -237,6 +237,7 @@ input::placeholder {
 .button_grp ul li.active {
     background: var(--main-color);
     color: #fff;
+    border: none;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.4);
 }
 
