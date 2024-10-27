@@ -124,6 +124,8 @@ router.get("/profile", async (req, res) => {
   }
 }),
   router.post("/updateUser", async (req, res) => {
+     
+     
     const authHeader = req.headers.authorization;
     if (!authHeader) {
       return res
@@ -142,14 +144,14 @@ router.get("/profile", async (req, res) => {
     try {
       const decoded = jwtService.verifyToken(token);
       const userId = decoded.userId;
-
+      
       const { username, phone } = req.body;
-
+     
       const updatedUser = await userService.updateUser(userId, {
         username,
         phone,
       });
-      console.log(updatedUser)
+      
 
       res.status(200).json({
         message: "User information updated successfully.",
