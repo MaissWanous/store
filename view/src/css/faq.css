@@ -23,19 +23,19 @@
     cursor: pointer;
     margin: 15px 0;
     color: var(--font); 
-    background-color: var(--main-color-light); /* لون زهر */
-    padding: 10px; /* تقليل الحشو */
+    background-color: var(--main-color-light); 
+    padding: 10px; 
     border-radius: 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 1.1em; /* حجم الخط */
+    font-size: 1.1em; 
     transition: background-color 0.3s ease, transform 0.3s ease;
   }
   
   .question:hover {
     background-color: var(--main-color-alt); 
-    transform: scale(1.02); /* تأثير تكبير عند المرور */
+    transform: scale(1.02); 
   }
   
   .answer {

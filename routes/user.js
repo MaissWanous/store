@@ -149,6 +149,7 @@ router.get("/profile", async (req, res) => {
         username,
         phone,
       });
+      console.log(updatedUser)
 
       res.status(200).json({
         message: "User information updated successfully.",

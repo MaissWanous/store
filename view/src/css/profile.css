@@ -1,0 +1,8 @@
+.user {
+    font-size: 111px;
+    text-align: center;
+    transform: translateX(50%);
+    position: relative;
+    color: var(--main-color);
+    right: 50%;
+}

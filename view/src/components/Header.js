@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom"
 import logo from "../img/logo.png"
 import Cookies from 'universal-cookie';
@@ -6,7 +6,11 @@ import { FaArrowAltCircleRight, FaArrowCircleLeft, FaBars, FaEye, FaEyeDropper, 
 
 export default function Header() {
     const cookie = new Cookies();
-    let token = cookie.get("Bearer");
+    let tokenc = cookie.get("Bearer");
+    const [token, setToken] = useState(tokenc);
+    useEffect(()=>{
+        setToken(tokenc)
+    },[])
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     function logOut() {
         window.location.pathname = "/register"
