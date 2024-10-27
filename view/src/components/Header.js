@@ -38,7 +38,7 @@ export default function Header() {
                         <div className="sidebar-content">
                             <Link to="/profile" className='sidebar-element'><FaUser className="icon" />  الحساب الشخصي </Link>
                             <Link className='sidebar-element'> <FaEye className="icon" />  الحجوزات</Link>
-                            <Link className='sidebar-element' ><FaLink />  shein.com</Link>
+                            <Link className='sidebar-element' ><FaLink className='icon' />  shein.com</Link>
                             <Link to="/faq" className='sidebar-element'><FaQuestionCircle className="icon" />  مساعدة</Link>
                             <div className='sidebar-element' onClick={logOut}><FaArrowAltCircleRight className="icon" />  تسجيل الخروج</div>
 

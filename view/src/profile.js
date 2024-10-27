@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import Cookies from 'universal-cookie';
 import "./css/profile.css"
 import { FaUser, FaPhone, FaEnvelope, FaUserCircle } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 export default function Profile() {
     const cookie = new Cookies();
@@ -34,19 +36,34 @@ export default function Profile() {
             });
     }, [token]);
     function submit() {
-      const a = window.confirm("هل تريد تعديل معلوماتك الشخصية؟");
-      console.log(a)
-        if (a) {
-            axios.post('http://localhost:2000/updateUser', {
-                username: userData.username
-                , phone: userData.phone,
-                headers: {
-                    authorization: 'Bearer ' + token
-                }
-            }).catch(error => {
-                console.error('Error fetching user data:', error);
-            });
-        }
+        Swal.fire({
+            title: "هل تريد تعديل معلوماتك الشخصية؟",
+            text: "يمكنك إلغاء العملية إذا كنت غير متأكد.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'تأكيد',
+            cancelButtonText: 'الغاء',
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.post('http://localhost:2000/updateUser', {
+                    username: userData.username
+                    , phone: userData.phone,
+                    headers: {
+                        authorization: 'Bearer ' + token
+                    }
+                }).catch(error => {
+                    console.error('Error fetching user data:', error);
+                })
+                Swal.fire('تم حفظ التعديلات الجديدة');
+            }
+        });
+
+
     }
     return (
         <div className="container">
@@ -86,6 +103,8 @@ export default function Profile() {
                             value={userData.email}
                             disabled
                         />
+                        <Link to="/email" className="link">تعديل كلمة المرور ؟</Link>
+
                         <div style={{ textAlign: "center" }}>
                             <button
                                 style={{

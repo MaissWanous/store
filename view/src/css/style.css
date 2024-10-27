@@ -75,7 +75,7 @@ form,
     padding: 20px;
 }
 
-input {
+input ,.btn{
     padding: 10px 20px;
     width: 100%;
     outline: none;
@@ -83,7 +83,7 @@ input {
     border-radius: 10px;
     box-shadow: var(--input-shadow);
     transition: 0.3s;
-    margin-bottom: 8px;
+    margin-bottom: 8px !important;
     direction: rtl;
 }
 
