@@ -13,6 +13,7 @@ import ResetPass from "./components/resetPass";
 import RequireAuth from "./RequireAuth";
 import FAQ from "./FAQ";
 import Profile from "./profile";
+import UserReservations from "./UserReservations";
 
 function App() {
   return (
@@ -23,14 +24,15 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/email" element={<Email />} />
         <Route path="/code" element={<Code />} />
-      
-        <Route element={<RequireAuth />}>
-          <Route path="/profile" element={<Profile />} />
-        </Route>
-
         <Route path="/" element={<UserHome />} />
         <Route path="/resetPass" element={<ResetPass />} />
-        <Route path="/faq" element={<FAQ />} /> 
+        <Route path="/faq" element={<FAQ />} />
+        {/* need account */}
+        <Route element={<RequireAuth />}>
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/userRese" element={<UserReservations />} />
+        </Route>
+
       </Routes>
     </div>
   );

@@ -2,19 +2,37 @@ import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom"
 import logo from "../img/logo.png"
 import Cookies from 'universal-cookie';
-import { FaArrowAltCircleRight, FaArrowCircleLeft, FaBars, FaEye, FaEyeDropper, FaLink, FaOutdent, FaQuestionCircle, FaUser } from 'react-icons/fa';
+import { FaArrowAltCircleRight, FaBars, FaEye, FaHome, FaLink, FaQuestionCircle, FaUser } from 'react-icons/fa';
+import Swal from 'sweetalert2';
 
 export default function Header() {
     const cookie = new Cookies();
     let tokenc = cookie.get("Bearer");
     const [token, setToken] = useState(tokenc);
-    useEffect(()=>{
+    useEffect(() => {
         setToken(tokenc)
-    },[])
+    }, [])
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     function logOut() {
-        window.location.pathname = "/register"
-        cookie.remove("Bearer")
+        Swal.fire({
+            title: "هل تريد تسجيل الخروج ؟",
+            text: "يمكنك إلغاء العملية إذا كنت غير متأكد.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'تأكيد',
+            cancelButtonText: 'الغاء',
+            customClass: {
+                confirmButton: 'btn btn-danger',
+                cancelButton: 'btn '
+            },
+            buttonsStyling: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.pathname = "/register"
+                cookie.remove("Bearer")
+
+            }
+        });
     }
     function toggleSidebar() {
         setIsSidebarOpen(!isSidebarOpen);
@@ -36,9 +54,10 @@ export default function Header() {
                 {isSidebarOpen && (
                     <div className="sidebar">
                         <div className="sidebar-content">
+                            <Link to="/" className='sidebar-element' ><FaHome className='icon' /> الصفحة الرئيسية</Link>
                             <Link to="/profile" className='sidebar-element'><FaUser className="icon" />  الحساب الشخصي </Link>
-                            <Link className='sidebar-element'> <FaEye className="icon" />  الحجوزات</Link>
-                            <Link className='sidebar-element' ><FaLink className='icon' />  shein.com</Link>
+                            <Link to="/userRese" className='sidebar-element'> <FaEye className="icon" />  الحجوزات</Link>
+                            <Link  to="https://de.shein.com" className='sidebar-element' ><FaLink className='icon' />  shein.com</Link>
                             <Link to="/faq" className='sidebar-element'><FaQuestionCircle className="icon" />  مساعدة</Link>
                             <div className='sidebar-element' onClick={logOut}><FaArrowAltCircleRight className="icon" />  تسجيل الخروج</div>
 
